@@ -1,27 +1,27 @@
 // The Map View section
 
-// Global map variables
-var map; // the map
-var markers = []; // the array of markers
-var selectedMarker = null; // selected marker
-var placeInfoWindow; // infoWindow for showing place infomation
-var bounds; // map lat/lng bounds
-
 var mapView = {
 
-  // function which draws the initial map
+  // map variables
+  map: null, // the Google map
+  markers: [], // array of markers
+  selectedMarker: null, // selected marker
+  placeInfoWindow: null, // infoWindow for showing place information
+  bounds: null, // map lat/lng bounds
+
+  // Given a lat/lng position, this function draws the initial map
   init: function(location) {
     // display the map
-     map = new google.maps.Map(document.getElementById('map'), {
+     this.map = new google.maps.Map(document.getElementById('map'), {
        center: { lat: location.lat, lng: location.lng },
        zoom: 13
      });
 
      // store current window bounds
-     bounds = new google.maps.LatLngBounds();
+     this.bounds = new google.maps.LatLngBounds();
 
      // define a single infoWindow which all places will share
-     placeInfoWindow = new google.maps.InfoWindow();
+     this.placeInfoWindow = new google.maps.InfoWindow();
 
   },
 
@@ -31,25 +31,25 @@ var mapView = {
   createMapMarker: function(position, name, id) {
     // create the marker
     var marker = new google.maps.Marker({
-      map: map,
+      map: this.map,
       position: position,
       title: name,
       animation: google.maps.Animation.DROP,
       id: id
     });
     // Push the marker to our array of markers
-    markers.push(marker);
+    this.markers.push(marker);
     // Create an event listener to animate the marker and open an infowindow
     // when the marker is clicked
     marker.addListener('click', function() {
       mapView.highlightMarker(this.id);
       // TODO: Shouldn't this also call the ViewModel to update the selectedPlace?
-      // Only the menu can update the KO ViewModel
+      // But only the menu can update the KO ViewModel
       // The KO ViewModel can call the map, but not vice versa
     });
     // If necessary, expand the boundaries of the map to show this marker
-    bounds.extend(marker.position);
-    map.fitBounds(bounds);
+    this.bounds.extend(marker.position);
+    this.map.fitBounds(this.bounds);
   },
 
   // Given a marker and the infoWindow, this function loads the
@@ -58,11 +58,9 @@ var mapView = {
     // If the window is not already open on this marker
     if (infowindow.marker != marker) {
       console.log('placeInfoWindow updated for ' + marker.title);
-      // load the content for this place
+      // load the infowindow content for this place
       infowindow.marker = marker;
-      // Initial content is just the place name
       infowindow.setContent('<div>' + marker.title + '</div>');
-      // display the infowindow
       infowindow.open(map, marker);
       // Add event listener to clear the marker upon close
       infowindow.addListener('closeclick', function() {
@@ -81,15 +79,15 @@ var mapView = {
   // displays its data in the infowindow
   highlightMarker: function(index) {
     // if we have already selected a previous marker, turn it off
-    if ( selectedMarker !== null ) {
-      selectedMarker.setAnimation( null );
+    if ( this.selectedMarker !== null ) {
+      this.selectedMarker.setAnimation( null );
     }
     // set the new marker
-    selectedMarker = markers[index];
-    console.log('Selected Marker is '+ selectedMarker.title);
-    selectedMarker.setAnimation( google.maps.Animation.BOUNCE );
+    this.selectedMarker = this.markers[index];
+    console.log('Selected Marker is '+ this.selectedMarker.title);
+    this.selectedMarker.setAnimation( google.maps.Animation.BOUNCE );
     // display infoWindow with this marker's data
-    this.createInfoWindow(selectedMarker, placeInfoWindow);
+    this.createInfoWindow(this.selectedMarker, this.placeInfoWindow);
   }
 
 };
