@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Neighborhood Map</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <div class="container">
+    <div class="map-container">
+      <div id="navbar"></div>
+      <div id="map"></div>
+    </div>
+    <div class="places-container">
+      <div class="filter-option">
+        <h4>Select place type:</h4>
+        <select data-bind="options: availableFilters">
+        </select>
+      </div>
+      <div class="list-view">
+        <h3>Places of Interest in Lafayette, CA</h3>
+        <ul id="places-list" data-bind="foreach: placeList">
+          <li data-bind="text: name, click: $parent.selectPlace"></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <script src="js/lib/knockout.js"></script>
+  <script src="js/model.js"></script>
+  <script src="js/mapview.js"></script>
+  <script src= "js/viewmodel.js"></script>
+  <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAz3kOqii58xK05S23w4e-NfhwY02oq4Uw&v=3&callback=VM.init">
+ </script>
+</body>
+</html>
