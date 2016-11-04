@@ -14,8 +14,9 @@
     <div class="places-container">
       <div class="filter-option">
         <h4>Select place type:</h4>
-        <select data-bind="options: availableFilters">
+        <select data-bind="options: availableFilters, value: selectedFilter">
         </select>
+        <p data-bind="visible: selectedFilter">  You have chosen <span data-bind="text: selectedFilter"></span></p>
       </div>
       <div class="list-view">
         <h3>Places of Interest in Lafayette, CA</h3>

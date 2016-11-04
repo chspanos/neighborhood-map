@@ -12,6 +12,9 @@ var ViewModel = function() {
     self.availableFilters.push(optionItem);
   });
 
+  // define a selected filter
+  this.selectedFilter = ko.observable( this.availableFilters()[0] );
+
   // create a list of places of interest
   this.placeList = ko.observableArray([]);
 
@@ -36,9 +39,11 @@ var ViewModel = function() {
     mapView.highlightMarker( index );
   };
 
-  this.updatePlace = function( index ) {
-    self.selectedPlace( self.placeList()[ index ] );
-  };
+  // This function monitors the selectedFilter observable and executes
+  // the provided function when its value changes
+  this.selectedFilter.subscribe(function(newValue) {
+    console.log('Selected filter is ' + newValue );
+  }, this, "change");
 
 };
 
