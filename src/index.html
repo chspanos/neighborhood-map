@@ -4,14 +4,12 @@
   <meta charset="UTF-8">
   <title>Neighborhood Map</title>
   <link rel="stylesheet" href="css/style.css">
+  <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-T8Gy5hrqNKT+hzMclPo118YTQO6cYprQmhrYwIiQ/3axmI1hQomh7Ud2hPOy8SP1" crossorigin="anonymous">
 </head>
 <body>
   <div class="container">
-    <div class="map-container">
-      <div id="navbar"></div>
-      <div id="map"></div>
-    </div>
-    <div class="places-container">
+    <div class="places-container" data-bind="css: { open: menuVisible }">
+      <input id="close-btn" type="button" value="X" data-bind="click: toggleMenu">
       <div class="filter-option">
         <h4>Select place type:</h4>
         <select data-bind="options: availableFilters, value: selectedFilter">
@@ -24,6 +22,12 @@
           <li data-bind="text: name, click: $parent.selectPlace"></li>
         </ul>
       </div>
+    </div>
+    <div class="map-container">
+      <nav id="navbar">
+        <p class="menu-btn"><a class="fa-bars" href="#menu" alt="menu button" data-bind="click: toggleMenu"></a></p>
+      </nav>
+      <div id="map"></div>
     </div>
   </div>
   <script src="js/lib/knockout.js"></script>

@@ -5,6 +5,14 @@
 var ViewModel = function() {
   var self = this;
 
+  // initialize hamburger menu
+  this.menuVisible = ko.observable(false);
+
+  // event handler for the hamburger menu
+  this.toggleMenu = function() {
+    this.menuVisible( !this.menuVisible() );
+  };
+
   // create a list of filter options
   this.availableFilters = ko.observableArray([]);
 

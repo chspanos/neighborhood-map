@@ -1,5 +1,6 @@
 html, body {
   font-family: Arial, sans-serif;
+  width: 100%;
   height: 100%;
   margin: 0;
   padding: 0;
@@ -12,16 +13,51 @@ body {
 .container {
   width: 100%;
   height: 100%;
-  position: relative;
 }
 
 .places-container {
-  width: 30%;
   background-color: rgb(188, 227, 241);
-  display: flex;
-  flex-wrap: wrap;
-  will-change: transform;
-  transform: translateZ(0);
+  width: 300px;
+  height: 100%;
+  z-index: 2;
+  position: absolute;
+  -webkit-transform: translate(-300px, 0);
+  transform: translate(-300px, 0);
+  transition: transform 0.3s ease;
+}
+
+.places-container.open {
+  -webkit-transform: translate(0, 0);
+  transform: translate(0, 0);
+}
+
+.map-container {
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+}
+
+@media screen and (min-width: 600px) {
+  .places-container {
+    position: relative;
+    transform: translate(0, 0);
+  }
+  .container {
+    display: flex;
+    flex-flow: row nowrap;
+  }
+  .map-container {
+    width: auto;
+    flex-grow: 1;
+  }
+  #close-btn {
+    display: none;
+  }
+}
+
+#close-btn {
+  float: right;
+  margin: 5px;
 }
 
 input {
@@ -41,21 +77,23 @@ select {
   margin-left: 50px;
 }
 
-.map-container {
-  width: 100%;
-}
-
 #navbar {
-  width: 100%;
   height: 40px;
   background-color: green;
 }
 
+.menu-btn {
+  width: 20px;
+  margin: 0;
+  padding: 10px;
+}
+
+/* fontawesome */
+[class*="fa-"]:before {
+  font-family: "FontAwesome", sans-serif;
+  color: black;
+}
+
 #map {
-  top: 40px;
-  bottom: 0px;
-  left: 0px;
-  right: 0px;
-  position: absolute;
   height: 100%;
 }
