@@ -33,6 +33,27 @@ var ViewModel = function() {
   // define a selected place
   this.selectedPlace = ko.observable( this.placeList()[0] );
 
+  // this function is called by the google maps API callback and
+  // kicks off the application
+  this.init = function() {
+    mapView.init(model.mapData.location);
+    this.createMarkers();
+  };
+
+  // createMarker function traverses the placeList and creates
+  // a marker for each element on the list
+  this.createMarkers = function() {
+    // iterate through the placelist
+    for (var i = 0; i < this.placeList().length; i++) {
+      // get postion and name from the place array
+      var name = this.placeList()[i].name();
+      var location = this.placeList()[i].location();
+      console.log(name + " has location: " + location.lat + ", " + location.lng);
+      // create map marker
+      mapView.createMapMarker(location, name, i);
+    }
+  };
+
   // when a place is clicked on the menu, this function selects
   // the place and instructs the map to animate and display the
   // corresponding marker
@@ -55,31 +76,5 @@ var ViewModel = function() {
 
 };
 
-ko.applyBindings(new ViewModel());
-
-// ViewModel section for interfacing with Google Maps APIs
-// Not implemented with Knockout!
-var VM = {
-
-  // this function is called by the google maps API callback and
-  // kicks off the application
-  init: function() {
-    mapView.init(model.mapData.location);
-    this.createMarkers(model.places);
-  },
-
-  // createMarker function traverses the places array and creates
-  // a marker for each element on the list
-  createMarkers: function(placeArray) {
-    // iterate through the placelist
-    for (var i = 0; i < placeArray.length; i++) {
-      // get postion and name from the place array
-      var name = placeArray[i].name;
-      var location = placeArray[i].location;
-      console.log(name + " has location: " + location.lat + ", " + location.lng);
-      // create map marker
-      mapView.createMapMarker(location, name, i);
-    }
-  }
-
-};
+var viewModel = new ViewModel();
+ko.applyBindings(viewModel);
