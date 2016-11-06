@@ -30,6 +30,7 @@ var ViewModel = function() {
 
   // define a selected place
   this.selectedPlace = ko.observable( this.placeList()[0] );
+  this.placeList()[0].isSelected(true);
 
   // this function is called by the google maps API callback and
   // kicks off the application
@@ -63,9 +64,10 @@ var ViewModel = function() {
   // when a place is clicked on the menu, this function selects
   // the place and instructs the map to animate and display the
   // corresponding marker
-  this.selectPlace = function( selectedPlace ) {
+  this.selectPlace = function(selectedPlace) {
     console.log( selectedPlace.name() + " was selected");
     // reset the selection
+    self.toggleSelect( selectedPlace );
     self.selectedPlace( selectedPlace );
     // find its corresponding marker
     var index = self.placeList.indexOf( selectedPlace );
@@ -73,6 +75,21 @@ var ViewModel = function() {
     // and display its data in an infoWindow
     self.activateMarker( model.markers[index] );
   };
+
+  // Given the placeList index, update selectedPlace and highlight it
+  this.updateSelectedPlace = function(index) {
+    var newPlace = self.placeList()[index];
+    self.toggleSelect(newPlace);
+    self.selectedPlace(newPlace);
+  };
+
+  // Toggle function to highlight selected places on the list
+  this.toggleSelect = function(place) {
+    if ( place !== self.selectedPlace() ) {
+      self.selectedPlace().isSelected(false);
+      place.isSelected(true);
+    }
+  }
 
   // Given a chosen marker, this function animates the
   // chosen marker and displays its data in the infowindow

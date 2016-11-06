@@ -28,8 +28,7 @@ var model = {
         "lng": -122.123683
       },
       "types": [ "establishment", "park", "point_of_interest", "premise" ],
-      "place_id": "ChIJRxvxSlFihYAR7K0dDXrNYTw",
-      "filtered": false
+      "place_id": "ChIJRxvxSlFihYAR7K0dDXrNYTw"
     },
     {
       "name": "Jennie Bickerstaff Tree",
@@ -39,8 +38,7 @@ var model = {
         "lng": -122.124576
       },
       "types": [ "establishment", "point_of_interest" ],
-      "place_id": "ChIJYTuM41lihYAR58-1HjjtoYE",
-      "filtered": false
+      "place_id": "ChIJYTuM41lihYAR58-1HjjtoYE"
     },
     {
       "name": "Lafayette Library and Learning Center",
@@ -50,8 +48,7 @@ var model = {
         "lng": -122.1158424
       },
       "types": [ "establishment", "library", "point_of_interest" ],
-      "place_id": "ChIJBYwuMVtihYARffszT-0XSBg",
-      "filtered": false
+      "place_id": "ChIJBYwuMVtihYARffszT-0XSBg"
     },
     {
       "name": "M H Stanley Middle School",
@@ -61,8 +58,7 @@ var model = {
         "lng": -122.1143701
       },
       "types": [ "establishment", "point_of_interest", "school" ],
-      "place_id": "ChIJS_VvyUNihYARbB8lgJHLJyM",
-      "filtered": false
+      "place_id": "ChIJS_VvyUNihYARbB8lgJHLJyM"
     },
     {
       "name": "Lafayette Elementary School",
@@ -72,8 +68,7 @@ var model = {
         "lng": -122.1177424
       },
       "types": [ "establishment", "point_of_interest", "school" ],
-      "place_id": "ChIJtaIzNFtihYAR_FWVrpZ3P7Q",
-      "filtered": false
+      "place_id": "ChIJtaIzNFtihYAR_FWVrpZ3P7Q"
     },
     {
       "name": "Artisan Bistro",
@@ -83,8 +78,7 @@ var model = {
         "lng": -122.1106254
       },
       "types": [ "bar", "establishment", "food", "point_of_interest", "restaurant" ],
-      "place_id": "ChIJM6KKP0ZihYAR2Qm_0TPpFrw",
-      "filtered": false
+      "place_id": "ChIJM6KKP0ZihYAR2Qm_0TPpFrw"
     },
     {
       "name": "Orchard Nursery and Florist",
@@ -94,8 +88,7 @@ var model = {
         "lng": -122.1521502
       },
       "types": [ "establishment", "florist", "food", "point_of_interest", "store" ],
-      "place_id": "ChIJT33wd-BihYARKiJaprWzfkY",
-      "filtered": false
+      "place_id": "ChIJT33wd-BihYARKiJaprWzfkY"
     },
     {
       "name": "Acalanes High School",
@@ -105,8 +98,7 @@ var model = {
         "lng": -122.0975344
       },
       "types": [ "establishment", "point_of_interest", "school" ],
-      "place_id": "ChIJS6QiMDJihYARswhGXvI5h-E",
-      "filtered": false
+      "place_id": "ChIJS6QiMDJihYARswhGXvI5h-E"
     }
   ],
 
@@ -121,7 +113,8 @@ var Place = function(data) {
   this.location = ko.observable(data.location);
   this.types = ko.observableArray(data.types);
   this.placeId = ko.observable(data.place_id);
-  this.filtered = ko.observable(data.filtered);
+  this.isFiltered = ko.observable(false);
+  this.isSelected = ko.observable(false);
 
   this.formattedAddress = ko.computed(function() {
     return this.name + ', ' + this.address;

@@ -11,8 +11,9 @@ var mapView = {
        center: { lat: location.lat, lng: location.lng },
        zoom: 13
      });
-     console.log(map);
-     // TODO: if not successful alert with error message
+     if (map === null) {
+       alert('ERROR: Google Maps API was unable to display map');
+     }
      return map;
    },
 
@@ -40,7 +41,7 @@ var mapView = {
     // when the marker is clicked
     marker.addListener('click', function() {
       viewModel.activateMarker(this);
-      // TODO: Shouldn't this also call the ViewModel to update the selectedPlace?
+      viewModel.updateSelectedPlace(this.id);
     });
     // If necessary, expand the boundaries of the map to show this marker
     bounds.extend(marker.position);
