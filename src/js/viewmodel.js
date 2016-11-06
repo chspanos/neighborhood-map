@@ -28,6 +28,20 @@ var ViewModel = function() {
     self.placeList.push(new Place(placeItem));
   });
 
+  // use the filter to obtain a filtered list of places
+  this.filteredList = ko.computed(function() {
+    return ko.utils.arrayFilter(this.placeList(), function(place) {
+      // return true if self.selectedFilter is an element of place.types()
+      var chosenType = self.selectedFilter();
+      if (chosenType === "all") {
+        return true;
+      } else {
+        var index = place.types().indexOf(chosenType);
+        return ( index >= 0 );
+      }
+    });
+  }, this);
+
   // define a selected place
   this.selectedPlace = ko.observable( this.placeList()[0] );
   this.placeList()[0].isSelected(true);
