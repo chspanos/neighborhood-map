@@ -1,7 +1,5 @@
 // ViewModel section
 
-// ViewModel section for interfacing with the places menu
-// Implemented in Knockout
 var ViewModel = function() {
   var self = this;
 
@@ -36,21 +34,29 @@ var ViewModel = function() {
   // this function is called by the google maps API callback and
   // kicks off the application
   this.init = function() {
-    mapView.init(model.mapData.location);
+    // display Map and initialize map variables
+    model.map = mapView.displayMap(model.mapData.location);
+    model.bounds = mapView.initBounds();
+    model.placeInfoWindow = mapView.initInfoWindow();
+    // create and display markers
     this.createMarkers();
   };
 
   // createMarker function traverses the placeList and creates
-  // a marker for each element on the list
+  // a marker for each element on the list and adds that marker
+  // to the markers array
   this.createMarkers = function() {
     // iterate through the placelist
     for (var i = 0; i < this.placeList().length; i++) {
+      var marker;
       // get postion and name from the place array
       var name = this.placeList()[i].name();
       var location = this.placeList()[i].location();
       console.log(name + " has location: " + location.lat + ", " + location.lng);
       // create map marker
-      mapView.createMapMarker(location, name, i);
+      marker = mapView.createMapMarker(model.map, model.bounds, location, name, i);
+      // Push the marker to our array of markers
+      model.markers.push(marker);
     }
   };
 
@@ -61,11 +67,26 @@ var ViewModel = function() {
     console.log( selectedPlace.name() + " was selected");
     // reset the selection
     self.selectedPlace( selectedPlace );
-    // find the index of the selectedPlace
+    // find its corresponding marker
     var index = self.placeList.indexOf( selectedPlace );
-    // have the mapView highlight the corresponding marker for this place
+    // highlight the corresponding marker for this place
     // and display its data in an infoWindow
-    mapView.highlightMarker( index );
+    self.activateMarker( model.markers[index] );
+  };
+
+  // Given a chosen marker, this function animates the
+  // chosen marker and displays its data in the infowindow
+  this.activateMarker = function(marker) {
+    // if we have already selected a previous marker, turn it off
+    if ( model.selectedMarker !== null ) {
+      mapView.unhighlightMarker( model.selectedMarker );
+    }
+    // set and animate the new marker
+    model.selectedMarker = marker;
+    console.log('Selected Marker is '+ marker.title);
+    mapView.highlightMarker(marker);
+    // display infoWindow with this marker's data
+    mapView.createInfoWindow(marker, model.placeInfoWindow);
   };
 
   // This function monitors the selectedFilter observable and executes

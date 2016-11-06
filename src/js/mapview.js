@@ -2,54 +2,51 @@
 
 var mapView = {
 
-  // map variables
-  map: null, // the Google map
-  markers: [], // array of markers
-  selectedMarker: null, // selected marker
-  placeInfoWindow: null, // infoWindow for showing place information
-  bounds: null, // map lat/lng bounds
-
   // Given a lat/lng position, this function draws the initial map
-  init: function(location) {
+  // and returns the new map if successful
+  displayMap: function(location) {
+    var map = null;
     // display the map
-     this.map = new google.maps.Map(document.getElementById('map'), {
+    map = new google.maps.Map(document.getElementById('map'), {
        center: { lat: location.lat, lng: location.lng },
        zoom: 13
      });
+     console.log(map);
+     // TODO: if not successful alert with error message
+     return map;
+   },
 
-     // store current window bounds
-     this.bounds = new google.maps.LatLngBounds();
+   initBounds: function() {
+     return( new google.maps.LatLngBounds() );
+   },
 
-     // define a single infoWindow which all places will share
-     this.placeInfoWindow = new google.maps.InfoWindow();
+   initInfoWindow: function() {
+     return( new google.maps.InfoWindow() );
+   },
 
-  },
-
-  // Given the place lat/lng position, name, and identifier, create a marker
-  // for this location and add it to the map. Also create an event
-  // listener for this marker.
-  createMapMarker: function(position, name, id) {
+  // Given the map, current bounds, place lat/lng position, name, and
+  // identifier, create a marker for this location and add it to the map.
+  // Also create an event listener for this marker. Return the new marker.
+  createMapMarker: function(map, bounds, position, name, id) {
     // create the marker
     var marker = new google.maps.Marker({
-      map: this.map,
+      map: map,
       position: position,
       title: name,
       animation: google.maps.Animation.DROP,
       id: id
     });
-    // Push the marker to our array of markers
-    this.markers.push(marker);
     // Create an event listener to animate the marker and open an infowindow
     // when the marker is clicked
     marker.addListener('click', function() {
-      mapView.highlightMarker(this.id);
+      viewModel.activateMarker(this);
       // TODO: Shouldn't this also call the ViewModel to update the selectedPlace?
-      // But only the menu can update the KO ViewModel
-      // The KO ViewModel can call the map, but not vice versa
     });
     // If necessary, expand the boundaries of the map to show this marker
-    this.bounds.extend(marker.position);
-    this.map.fitBounds(this.bounds);
+    bounds.extend(marker.position);
+    map.fitBounds(bounds);
+    // return the new marker
+    return marker;
   },
 
   // Given a marker and the infoWindow, this function loads the
@@ -75,19 +72,14 @@ var mapView = {
     }
   },
 
-  // Given the marker index, this function animates the chosen marker and
-  // displays its data in the infowindow
-  highlightMarker: function(index) {
-    // if we have already selected a previous marker, turn it off
-    if ( this.selectedMarker !== null ) {
-      this.selectedMarker.setAnimation( null );
-    }
-    // set the new marker
-    this.selectedMarker = this.markers[index];
-    console.log('Selected Marker is '+ this.selectedMarker.title);
-    this.selectedMarker.setAnimation( google.maps.Animation.BOUNCE );
-    // display infoWindow with this marker's data
-    this.createInfoWindow(this.selectedMarker, this.placeInfoWindow);
+  // Given a chosen marker, this function animates the marker
+  highlightMarker: function(marker) {
+    marker.setAnimation( google.maps.Animation.BOUNCE );
+  },
+
+  // Given a chosen marker, this function stops the animation
+  unhighlightMarker: function(marker) {
+    marker.setAnimation( null );
   }
 
 };

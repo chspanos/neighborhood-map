@@ -1,6 +1,14 @@
 // Model section
 var model = {
 
+  // mapView variables
+  "map": null, // the Google map
+  "markers": [], // array of markers
+  "selectedMarker": null, // selected Marker
+  "placeInfoWindow": null, // infoWindow for showing place information
+  "bounds": null, // map lat/lng bounds
+
+  // Map location info
   "mapData": {
     "name": "Lafayette, CA, USA",
     "location" : {
@@ -10,6 +18,7 @@ var model = {
     "place_id": "ChIJhY_6o3xghYARJ2nkA11YKPk"
   },
 
+  // Array of places
   "places": [
     {
       "name": "The Crosses of Lafayette",
