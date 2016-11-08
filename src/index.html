@@ -22,6 +22,10 @@
           <li class="place" data-bind="text: name, click: $parent.selectPlace, css: { highlight: isSelected }"></li>
         </ul>
       </div>
+      <div id="place-info" data-bind="with: selectedPlace">
+        <h3 class="place-name" data-bind="text: name"></h3>
+        <img class="place-img" src="" alt="streetview image" data-bind="attr: {src: imgSrc}">
+      </div>
     </div>
     <div class="map-container">
       <nav id="navbar">

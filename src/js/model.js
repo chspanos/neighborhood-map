@@ -116,7 +116,11 @@ var Place = function(data) {
   this.isDisplayed = ko.observable(true);
   this.isSelected = ko.observable(false);
 
+  this.imgSrc = ko.computed(function() {
+    return 'http://maps.googleapis.com/maps/api/streetview?size=250x150&location=' + this.address() + '';
+  }, this);
+
   this.formattedAddress = ko.computed(function() {
-    return this.name + ', ' + this.address;
+    return this.name() + ', ' + this.address();
   }, this);
 };
