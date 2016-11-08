@@ -40,7 +40,6 @@ var mapView = {
     // Create an event listener to animate the marker and open an infowindow
     // when the marker is clicked
     marker.addListener('click', function() {
-      viewModel.activateMarker(this);
       viewModel.updateSelectedPlace(this.id);
     });
     // If necessary, expand the boundaries of the map to show this marker
@@ -55,7 +54,6 @@ var mapView = {
   createInfoWindow: function(marker, infowindow) {
     // If the window is not already open on this marker
     if (infowindow.marker != marker) {
-      console.log('placeInfoWindow updated for ' + marker.title);
       // load the infowindow content for this place
       infowindow.marker = marker;
       infowindow.setContent('<div>' + marker.title + '</div>');
@@ -66,9 +64,8 @@ var mapView = {
         if ( this.marker !== null ) {
           this.marker.setAnimation( null );
         };
-        // clear the marker field
+        // close the window
         this.marker = null;
-        console.log('placeInfoWindow closed');
       });
     }
   },
@@ -81,6 +78,11 @@ var mapView = {
   // Given a chosen marker, this function stops the animation
   unhighlightMarker: function(marker) {
     marker.setAnimation( null );
+  },
+
+  // Set marker visibility
+  updateMarker: function(marker, visibility) {
+    marker.setVisible(visibility);
   }
 
 };

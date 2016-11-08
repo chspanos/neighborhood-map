@@ -18,7 +18,7 @@ var ViewModel = function() {
     self.availableFilters.push(optionItem);
   });
 
-  // define a selected filter
+  // define a selected filter and set to "all" initially
   this.selectedFilter = ko.observable( this.availableFilters()[0] );
 
   // create a list of places of interest
@@ -31,20 +31,29 @@ var ViewModel = function() {
   // use the filter to obtain a filtered list of places
   this.filteredList = ko.computed(function() {
     return ko.utils.arrayFilter(this.placeList(), function(place) {
-      // return true if self.selectedFilter is an element of place.types()
       var chosenType = self.selectedFilter();
       if (chosenType === "all") {
+        // display all
+        place.isDisplayed(true);
         return true;
       } else {
-        var index = place.types().indexOf(chosenType);
-        return ( index >= 0 );
+        // return true if self.selectedFilter is an element of place.types()
+        if ( place.types().indexOf(chosenType) >= 0 ) {
+          // type match, so mark place as displayed and add to filteredList
+          place.isDisplayed(true);
+          return true;
+        } else {
+          // no match, so hide place
+          place.isDisplayed(false);
+          return false;
+        }
       }
     });
   }, this);
 
-  // define a selected place
-  this.selectedPlace = ko.observable( this.placeList()[0] );
-  this.placeList()[0].isSelected(true);
+  // deck
+  // declare an observable selected place
+  this.selectedPlace = ko.observable( null );
 
   // this function is called by the google maps API callback and
   // kicks off the application
@@ -55,6 +64,8 @@ var ViewModel = function() {
     model.placeInfoWindow = mapView.initInfoWindow();
     // create and display markers
     this.createMarkers();
+    // set the selectedPlace to be the first item on the places list
+    this.selectPlace( this.placeList()[0] );
   };
 
   // createMarker function traverses the placeList and creates
@@ -67,7 +78,6 @@ var ViewModel = function() {
       // get postion and name from the place array
       var name = this.placeList()[i].name();
       var location = this.placeList()[i].location();
-      console.log(name + " has location: " + location.lat + ", " + location.lng);
       // create map marker
       marker = mapView.createMapMarker(model.map, model.bounds, location, name, i);
       // Push the marker to our array of markers
@@ -75,34 +85,34 @@ var ViewModel = function() {
     }
   };
 
-  // when a place is clicked on the menu, this function selects
-  // the place and instructs the map to animate and display the
-  // corresponding marker
-  this.selectPlace = function(selectedPlace) {
-    console.log( selectedPlace.name() + " was selected");
-    // reset the selection
-    self.toggleSelect( selectedPlace );
-    self.selectedPlace( selectedPlace );
-    // find its corresponding marker
-    var index = self.placeList.indexOf( selectedPlace );
-    // highlight the corresponding marker for this place
-    // and display its data in an infoWindow
-    self.activateMarker( model.markers[index] );
+  // when a place is selected (either by menu, map click or initialization),
+  // this function updates selectedPlace and instructs the map to animate
+  // and display its corresponding marker
+  this.selectPlace = function(newPlace) {
+    if ( newPlace !== self.selectedPlace() ) {
+      // reset the selection
+      self.toggleSelect(newPlace);
+      self.selectedPlace(newPlace);
+      // find its corresponding marker
+      var index = self.placeList.indexOf(newPlace);
+      // highlight the corresponding marker
+      // and display its data in an infoWindow
+      self.activateMarker( model.markers[index] );
+    }
   };
 
-  // Given the placeList index, update selectedPlace and highlight it
+  // Given a placeList index, update and highlight selectedPlace
   this.updateSelectedPlace = function(index) {
     var newPlace = self.placeList()[index];
-    self.toggleSelect(newPlace);
-    self.selectedPlace(newPlace);
+    self.selectPlace(newPlace);
   };
 
-  // Toggle function to highlight selected places on the list
+  // Toggle function to highlight selected places on the menu
   this.toggleSelect = function(place) {
-    if ( place !== self.selectedPlace() ) {
+    if ( self.selectedPlace() !== null ) {
       self.selectedPlace().isSelected(false);
-      place.isSelected(true);
     }
+    place.isSelected(true);
   }
 
   // Given a chosen marker, this function animates the
@@ -114,16 +124,20 @@ var ViewModel = function() {
     }
     // set and animate the new marker
     model.selectedMarker = marker;
-    console.log('Selected Marker is '+ marker.title);
     mapView.highlightMarker(marker);
     // display infoWindow with this marker's data
     mapView.createInfoWindow(marker, model.placeInfoWindow);
   };
 
-  // This function monitors the selectedFilter observable and executes
-  // the provided function when its value changes
+  // This function monitors the selectedFilter observable and updates
+  // the markers when its value changes
   this.selectedFilter.subscribe(function(newValue) {
-    console.log('Selected filter is ' + newValue );
+    // update markers
+    for (var i = 0; i < self.placeList().length; i++) {
+      mapView.updateMarker( model.markers[i], self.placeList()[i].isDisplayed() );
+    }
+    // reset the selectedPlace to the first item on the filteredList
+    self.selectPlace( self.filteredList()[0] );
   }, this, "change");
 
 };

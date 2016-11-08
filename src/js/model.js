@@ -113,7 +113,7 @@ var Place = function(data) {
   this.location = ko.observable(data.location);
   this.types = ko.observableArray(data.types);
   this.placeId = ko.observable(data.place_id);
-  this.isFiltered = ko.observable(false);
+  this.isDisplayed = ko.observable(true);
   this.isSelected = ko.observable(false);
 
   this.formattedAddress = ko.computed(function() {
