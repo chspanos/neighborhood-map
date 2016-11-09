@@ -117,7 +117,8 @@ var Place = function(data) {
   this.isSelected = ko.observable(false);
 
   this.imgSrc = ko.computed(function() {
-    return 'http://maps.googleapis.com/maps/api/streetview?size=250x150&location=' + this.address() + '';
+    return 'http://maps.googleapis.com/maps/api/streetview?size=250x150&location=' +
+    this.location().lat + ',' + this.location().lng + '';
   }, this);
 
   this.formattedAddress = ko.computed(function() {

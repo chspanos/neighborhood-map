@@ -56,7 +56,11 @@ var mapView = {
     if (infowindow.marker != marker) {
       // load the infowindow content for this place
       infowindow.marker = marker;
-      infowindow.setContent('<div>' + marker.title + '</div>');
+      var title = '<div>' + marker.title + '</div>';
+      var streetviewUrl = 'http://maps.googleapis.com/maps/api/streetview?size=200x150&location=' +
+        marker.position.lat() + ',' + marker.position.lng() + '';
+      var image = '<img src="' + streetviewUrl + '" alt="streetview image">';
+      infowindow.setContent(title + image);
       infowindow.open(map, marker);
       // Add event listener to clear the marker upon close
       infowindow.addListener('closeclick', function() {
