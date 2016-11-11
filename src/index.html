@@ -22,9 +22,13 @@
           <li class="place" data-bind="text: name, click: $parent.selectPlace, css: { highlight: isSelected }"></li>
         </ul>
       </div>
-      <div id="place-info" data-bind="with: selectedPlace">
-        <h3 class="place-name" data-bind="text: name"></h3>
-        <img class="place-img" src="" alt="streetview image" data-bind="attr: {src: imgSrc}">
+    </div>
+    <div id="place-info" data-bind="with: selectedPlace">
+      <h4 class="place-name" data-bind="text: name"></h4>
+      <img class="place-img" src="" alt="streetview image" data-bind="attr: {src: imgSrc}">
+      <div class="wikipedia-container">
+        <h5 id="wikipedia-header">Relevant Wikipedia Links</h5>
+        <ul id="wikipedia-links"></ul>
       </div>
     </div>
     <div class="map-container">
@@ -35,8 +39,10 @@
     </div>
   </div>
   <script src="js/lib/knockout.js"></script>
+  <script src="js/lib/jquery.min.js"></script>
   <script src="js/model.js"></script>
   <script src="js/mapview.js"></script>
+  <script src="js/wikiview.js"></script>
   <script src= "js/viewmodel.js"></script>
   <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAz3kOqii58xK05S23w4e-NfhwY02oq4Uw&v=3&callback=viewModel.init">
  </script>

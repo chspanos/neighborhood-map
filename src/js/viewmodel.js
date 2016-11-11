@@ -127,6 +127,8 @@ var ViewModel = function() {
     mapView.highlightMarker(marker);
     // display infoWindow with this marker's data
     mapView.createInfoWindow(marker, model.placeInfoWindow);
+    // load wikData
+    wikiView.loadWikiData(marker.title);
   };
 
   // This function monitors the selectedFilter observable and updates
