@@ -11,20 +11,22 @@
     <div class="places-container" data-bind="css: { open: menuVisible }">
       <input id="close-btn" type="button" value="X" data-bind="click: toggleMenu">
       <div class="filter-option">
-        <h5>Select place type:</h5>
+        <p class="filter">Select place type:
         <select data-bind="options: availableFilters, value: selectedFilter">
-        </select>
+        </select></p>
       </div>
       <div class="list-view">
-        <h3>Places of Interest in Lafayette, CA</h3>
+        <h3>Lafayette, CA Places of Interest</h3>
         <ul id="places-list" data-bind="foreach: filteredList">
           <li class="place" data-bind="text: name, click: $parent.selectPlace, css: { highlight: isSelected }"></li>
         </ul>
       </div>
     </div>
-    <div id="place-info" data-bind="with: selectedPlace">
+    <div class="place-window" data-bind="with: selectedPlace, css: { close: !windowVisible() }">
+      <input id="close-window" type="button" value="X" data-bind="click: $parent.toggleWindow">
       <h5 data-bind="text: name"></h5>
-      <p id="place-address" data-bind="text: address"></p>
+      <p class="place-info" data-bind="text: altName"></p>
+      <p class="place-info" data-bind="text: address"></p>
       <img class="place-img" src="" alt="streetview image" data-bind="attr: {src: imgSrc}">
       <div class="foursquare-container">
         <p class="fa-foursquare">

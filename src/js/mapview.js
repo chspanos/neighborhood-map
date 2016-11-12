@@ -12,7 +12,7 @@ var mapView = {
        zoom: 13
      });
      if (map === null) {
-       alert('ERROR: Google Maps API was unable to display map');
+       window.alert('ERROR: Google Maps API was unable to display map');
      }
      return map;
    },

@@ -21,9 +21,6 @@ var fourSqView = {
       dataType: "json"
     }).done(function(data) {
       // data found, so do something with it
-      console.log('Foursquare returned the following:');
-      console.log(data);
-
       var placeUrl = data.response.venue.canonicalUrl;
       var msg = "Success";
 

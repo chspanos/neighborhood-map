@@ -54,6 +54,14 @@ var ViewModel = function() {
   // declare an observable selected place
   this.selectedPlace = ko.observable( null );
 
+  // initialize DOM infowindow
+  this.windowVisible = ko.observable(true);
+
+  // event handler for the DOM infowindow click
+  this.toggleWindow = function() {
+    self.windowVisible( !self.windowVisible() );
+  };
+
   // this function is called by the google maps API callback and
   // kicks off the application
   this.init = function() {
@@ -135,7 +143,8 @@ var ViewModel = function() {
     var index = self.placeList.indexOf(newPlace);
     // highlight the corresponding marker
     // and display its data in an infoWindow
-    self.activateMarker( model.markers[index] );  
+    self.activateMarker( model.markers[index] );
+    self.windowVisible(true);
   };
 
   // Given a placeList index, update and highlight selectedPlace

@@ -23,9 +23,6 @@ var wikiView = {
       jsonp: "callback"
     }).done(function(data) {
       // data found, so do something with it
-      console.log('Wikipedia returned the following:');
-      console.log(data);
-
       var titles = data[1];
       var urls = data[3];
       if (titles.length > 0) {

@@ -21,7 +21,8 @@ var model = {
   // Array of places
   "places": [
     {
-      "name": "The Crosses of Lafayette",
+      "name": "Lafayette Hillside Memorial",
+      "alt_name": "The Crosses of Lafayette",
       "address": "Deer Hill Rd, Lafayette, CA",
       "location": {
         "lat": 37.895186,
@@ -35,7 +36,7 @@ var model = {
       "name": "Lafayette Reservoir",
       "address": "3849 Mt Diablo Blvd, Lafayette, CA",
       "location": {
-        "lat": 37.8847926,
+        "lat": 37.884793,
         "lng": -122.145527
       },
       "types": [ "establishment", "park", "point_of_interest" ],
@@ -52,17 +53,6 @@ var model = {
       "types": [ "establishment", "library", "point_of_interest" ],
       "place_id": "ChIJBYwuMVtihYARffszT-0XSBg",
       "foursquare_id": "535087d4498e9ee4197d639a"
-    },
-    {
-      "name": "M H Stanley Middle School",
-      "address": "3455 School St, Lafayette, CA",
-      "location": {
-        "lat": 37.8869407,
-        "lng": -122.1143701
-      },
-      "types": [ "establishment", "point_of_interest", "school" ],
-      "place_id": "ChIJS_VvyUNihYARbB8lgJHLJyM",
-      "foursquare_id": "4b2811aef964a520848e24e3"
     },
     {
       "name": "Lafayette Elementary School",
@@ -113,21 +103,44 @@ var model = {
       "address": "3287 Mt Diablo Blvd, Lafayette, CA",
       "location": {
         "lat": 37.8960141,
-        "lng": -122.1009847
+        "lng": -122.101025
       },
       "types": [ "establishment", "lodging", "point_of_interest" ],
       "place_id": "ChIJJY3FhjlihYARapU2reVVa1M",
       "foursquare_id": "4ada326bf964a520d41f21e3"
+    },
+    {
+      "name": "Uncle Yu's",
+      "address": "999 Oak Hill Rd, Lafayette, CA",
+      "location": {
+        "lat": 37.8923289,
+        "lng": -122.1207499
+      },
+      "types": [ "establishment", "food", "point_of_interest", "restaurant" ],
+      "place_id": "ChIJ3UQEflBihYARtJ_sy15TMfI",
+      "foursquare_id": "4b11ed12f964a520128723e3"
+    },
+    {
+      "name": "Lafayette Community Garden",
+      "address": "3932 Mt Diablo Blvd, Lafayette, CA",
+      "location": {
+        "lat": 37.8892375,
+        "lng": -122.14153
+      },
+      "types": [ "establishment", "park", "point_of_interest" ],
+      "place_id": "ChIJP_FAx-RihYARLCNN_G67_fg",
+      "foursquare_id": "5658d31e498e840922293eae"
     }
   ],
 
-  "options": [ "all", "park", "school", "restaurant", "store", "library", "lodging" ]
+  "options": [ "all", "park", "school", "food", "library", "lodging" ]
 
 };
 
 // create an observable Place function, so we can access our data
 var Place = function(data) {
   this.name = ko.observable(data.name);
+  this.altName = ko.observable(data.alt_name);
   this.address = ko.observable(data.address);
   this.location = ko.observable(data.location);
   this.types = ko.observableArray(data.types);
