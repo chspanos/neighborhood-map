@@ -133,12 +133,12 @@ var Place = function(data) {
   this.types = ko.observableArray(data.types);
   this.placeId = ko.observable(data.place_id);
   this.foursquareId = ko.observable(data.foursquare_id);
-  this.wikiLink = ko.observable("");
-  this.wikiTitle = ko.observable("");
-  this.wikiMsg = ko.observable("");
   this.fourSqLink = ko.observable("");
   this.fourSqTitle = ko.observable("");
   this.fourSqMsg = ko.observable("");
+  this.wikiLink = ko.observable("");
+  this.wikiTitle = ko.observable("");
+  this.wikiMsg = ko.observable("");
   this.isDisplayed = ko.observable(true);
   this.isSelected = ko.observable(false);
 

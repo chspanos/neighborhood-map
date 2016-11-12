@@ -51,7 +51,6 @@ var ViewModel = function() {
     });
   }, this);
 
-  // deck
   // declare an observable selected place
   this.selectedPlace = ko.observable( null );
 
@@ -62,10 +61,48 @@ var ViewModel = function() {
     model.map = mapView.displayMap(model.mapData.location);
     model.bounds = mapView.initBounds();
     model.placeInfoWindow = mapView.initInfoWindow();
+    // load API data - load this upfront, so we only have to call these
+    // apps once for each place on our list
+    this.loadData();
     // create and display markers
     this.createMarkers();
     // set the selectedPlace to be the first item on the places list
     this.selectPlace( this.placeList()[0] );
+  };
+
+  // loadData function traverses the placeList and calls the
+  // APIs to load their data
+  this.loadData = function() {
+    for (var i = 0; i < this.placeList().length; i++) {
+      // load Foursquare data
+      fourSqView.loadFSData( this.placeList()[i].foursquareId(), i );
+      // load Wikipedia link
+      wikiView.loadWikiData( this.placeList()[i].name(), i );
+    }
+  };
+
+  // This function updates the indexed place element with the data
+  // returned by the foursquare API
+  this.updateFSData = function(index, fourSQUrl, msg) {
+    var place = self.placeList()[index];
+    if (msg === "Success") {
+      place.fourSqLink(fourSQUrl);
+      place.fourSqTitle( place.name() );
+      place.fourSqMsg( "" );
+    } else {
+      place.fourSqLink( "" );
+      place.fourSqTitle( "" );
+      place.fourSqMsg( msg );
+    }
+  };
+
+  // This function updates the indexed place element with the data
+  // returned by the wikipedia API
+  this.updateWikiData = function(index, url, title, msg) {
+    var place = self.placeList()[index];
+    place.wikiLink(url);
+    place.wikiTitle(title);
+    place.wikiMsg(msg);
   };
 
   // createMarker function traverses the placeList and creates
@@ -93,12 +130,12 @@ var ViewModel = function() {
       // reset the selection
       self.toggleSelect(newPlace);
       self.selectedPlace(newPlace);
-      // find its corresponding marker
-      var index = self.placeList.indexOf(newPlace);
-      // highlight the corresponding marker
-      // and display its data in an infoWindow
-      self.activateMarker( model.markers[index] );
     }
+    // find its corresponding marker
+    var index = self.placeList.indexOf(newPlace);
+    // highlight the corresponding marker
+    // and display its data in an infoWindow
+    self.activateMarker( model.markers[index] );  
   };
 
   // Given a placeList index, update and highlight selectedPlace
@@ -127,10 +164,6 @@ var ViewModel = function() {
     mapView.highlightMarker(marker);
     // display infoWindow with this marker's data
     mapView.createInfoWindow(marker, model.placeInfoWindow);
-    // load data
-    var fourSqId = self.selectedPlace().foursquareId();
-    fourSqView.loadFSData(fourSqId);
-    wikiView.loadWikiData(marker.title);
   };
 
   // This function monitors the selectedFilter observable and updates
@@ -143,28 +176,6 @@ var ViewModel = function() {
     // reset the selectedPlace to the first item on the filteredList
     self.selectPlace( self.filteredList()[0] );
   }, this, "change");
-
-  // This function updates the selectedPlace with the data
-  // returned by the foursquare API
-  this.updateFSData = function(fourSQUrl, msg) {
-    if (msg === "Success") {
-      self.selectedPlace().fourSqLink(fourSQUrl);
-      self.selectedPlace().fourSqTitle( self.selectedPlace().name() );
-      self.selectedPlace().fourSqMsg( "" );
-    } else {
-      self.selectedPlace().fourSqLink( "" );
-      self.selectedPlace().fourSqTitle( "" );
-      self.selectedPlace().fourSqMsg( msg );
-    }
-  };
-
-  // This function updates the selectedPlace with the data
-  // returned by the wikipedia API
-  this.updateWikiData = function(url, title, msg) {
-    self.selectedPlace().wikiLink(url);
-    self.selectedPlace().wikiTitle(title);
-    self.selectedPlace().wikiMsg(msg);
-  };
 
 };
 

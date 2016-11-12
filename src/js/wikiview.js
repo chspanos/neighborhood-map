@@ -2,11 +2,11 @@
 
 var wikiView = {
 
-  loadWikiData: function(placeName) {
+  loadWikiData: function(placeName, index) {
 
     // load wikipedia data
     var wikiRequestTimeout = setTimeout(function(){
-      viewModel.updateWikiData('', '', 'Failed to retrieve Wikipedia data for this place');
+      viewModel.updateWikiData(index, '', '', 'Failed to retrieve Wikipedia data for this place');
     }, 8000);
 
     var wikiBaseUrl = 'http://en.wikipedia.org/w/api.php';
@@ -33,17 +33,17 @@ var wikiView = {
         var title = titles[0];
         var url = urls[0];
         // update place with first match
-        viewModel.updateWikiData(url, title, '');
+        viewModel.updateWikiData(index, url, title, '');
       } else {
         // Oops! Search returned an empty array but no error
-        viewModel.updateWikiData('', '', 'No matching Wikipedia entries found');
+        viewModel.updateWikiData(index, '', '', 'No matching Wikipedia entries found');
       }
 
       // turn off timeout
       clearTimeout(wikiRequestTimeout);
 
     }).fail(function(e) {
-      viewModel.updateWikiData('', '', 'Wikipedia search failed');
+      viewModel.updateWikiData(index, '', '', 'Wikipedia search failed');
     });
 
     return false;

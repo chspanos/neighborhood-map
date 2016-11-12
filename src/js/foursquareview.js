@@ -4,7 +4,7 @@ var CLIENT_SECRET = 'SZ3FOYMEK0530G2JDCSHAUJSRPMMYKFFKIFITLFFZ1P01CWI';
 
 var fourSqView = {
 
-  loadFSData: function(placeId) {
+  loadFSData: function(placeId, index) {
 
     var version = 20160108;
     var baseUrl = 'https://api.foursquare.com/v2/venues';
@@ -25,17 +25,15 @@ var fourSqView = {
       console.log(data);
 
       var placeUrl = data.response.venue.canonicalUrl;
-      var category = data.response.venue.categories[0].name;
-      var rating = data.response.venue.rating;
       var msg = "Success";
 
       // update viewModel with foursquare data
-      viewModel.updateFSData(placeUrl, msg);
+      viewModel.updateFSData(index, placeUrl, msg);
 
     }).fail(function(e) {
       var placeUrl = "";
       var msg = "Foursquare search failed";
-      viewModel.updateFSData(placeUrl, msg);
+      viewModel.updateFSData(index, placeUrl, msg);
     });
 
     return false;
