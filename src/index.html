@@ -11,10 +11,9 @@
     <div class="places-container" data-bind="css: { open: menuVisible }">
       <input id="close-btn" type="button" value="X" data-bind="click: toggleMenu">
       <div class="filter-option">
-        <h4>Select place type:</h4>
+        <h5>Select place type:</h5>
         <select data-bind="options: availableFilters, value: selectedFilter">
         </select>
-        <p data-bind="visible: selectedFilter">  You have chosen <span data-bind="text: selectedFilter"></span></p>
       </div>
       <div class="list-view">
         <h3>Places of Interest in Lafayette, CA</h3>
@@ -24,11 +23,20 @@
       </div>
     </div>
     <div id="place-info" data-bind="with: selectedPlace">
-      <h4 class="place-name" data-bind="text: name"></h4>
+      <h5 data-bind="text: name"></h5>
+      <p id="place-address" data-bind="text: address"></p>
       <img class="place-img" src="" alt="streetview image" data-bind="attr: {src: imgSrc}">
+      <div class="foursquare-container">
+        <p class="fa-foursquare">
+          <a href="" data-bind="attr: {href: fourSqLink}, text: fourSqTitle"></a>
+          <span data-bind="text: fourSqMsg"></span>
+        </p>
+      </div>
       <div class="wikipedia-container">
-        <h5 id="wikipedia-header">Relevant Wikipedia Links</h5>
-        <ul id="wikipedia-links"></ul>
+        <p class="fa-wikipedia-w">
+          <a href="" data-bind="attr: {href: wikiLink}, text: wikiTitle"></a>
+          <span data-bind="text: wikiMsg"></span>
+        </p>
       </div>
     </div>
     <div class="map-container">
@@ -43,7 +51,8 @@
   <script src="js/model.js"></script>
   <script src="js/mapview.js"></script>
   <script src="js/wikiview.js"></script>
-  <script src= "js/viewmodel.js"></script>
+  <script src="js/foursquareview.js"></script>
+  <script src="js/viewmodel.js"></script>
   <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAz3kOqii58xK05S23w4e-NfhwY02oq4Uw&v=3&callback=viewModel.init">
  </script>
 </body>

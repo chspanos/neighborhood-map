@@ -127,7 +127,9 @@ var ViewModel = function() {
     mapView.highlightMarker(marker);
     // display infoWindow with this marker's data
     mapView.createInfoWindow(marker, model.placeInfoWindow);
-    // load wikData
+    // load data
+    var fourSqId = self.selectedPlace().foursquareId();
+    fourSqView.loadFSData(fourSqId);
     wikiView.loadWikiData(marker.title);
   };
 
@@ -141,6 +143,28 @@ var ViewModel = function() {
     // reset the selectedPlace to the first item on the filteredList
     self.selectPlace( self.filteredList()[0] );
   }, this, "change");
+
+  // This function updates the selectedPlace with the data
+  // returned by the foursquare API
+  this.updateFSData = function(fourSQUrl, msg) {
+    if (msg === "Success") {
+      self.selectedPlace().fourSqLink(fourSQUrl);
+      self.selectedPlace().fourSqTitle( self.selectedPlace().name() );
+      self.selectedPlace().fourSqMsg( "" );
+    } else {
+      self.selectedPlace().fourSqLink( "" );
+      self.selectedPlace().fourSqTitle( "" );
+      self.selectedPlace().fourSqMsg( msg );
+    }
+  };
+
+  // This function updates the selectedPlace with the data
+  // returned by the wikipedia API
+  this.updateWikiData = function(url, title, msg) {
+    self.selectedPlace().wikiLink(url);
+    self.selectedPlace().wikiTitle(title);
+    self.selectedPlace().wikiMsg(msg);
+  };
 
 };
 

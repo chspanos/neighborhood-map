@@ -60,14 +60,18 @@ body {
   margin: 5px;
 }
 
+#places-list {
+  font-size: 16px;
+}
+
 #place-info {
   background-color: white;
-  width: 300px;
-  height: 325px;
+  width: 250px;
+  height: auto;
   z-index: 3;
   position: absolute;
-  top: 325px;
-  left: 0;
+  top: 350px;
+  left: 25px;
 }
 
 input {
@@ -81,6 +85,7 @@ h3 {
 
 h4, h5 {
   padding-left: 10px;
+  margin-bottom: 1em;
 }
 
 select {
@@ -92,12 +97,13 @@ select {
 }
 
 .place-img {
-  width = 250px;
+  width = 200px;
   padding-left: 25px;
 }
 
-#wikipedia-links {
+#place-address, .foursquare-container, .wikipedia-container {
   font-size: 12px;
+  padding-left: 25px;
 }
 
 #navbar {
