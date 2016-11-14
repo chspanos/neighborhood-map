@@ -116,6 +116,11 @@ select {
   padding-left: 25px;
 }
 
+.attributions {
+  font-size: 10px;
+  padding-left: 10px;
+}
+
 #navbar {
   height: 40px;
   background-color: green;

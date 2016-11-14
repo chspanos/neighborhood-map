@@ -84,6 +84,29 @@ var mapView = {
   // Set marker visibility
   updateMarker: function(marker, visibility) {
     marker.setVisible(visibility);
+  },
+
+  // funftion to load places details from Google places
+  loadPlaceDetails: function(map, marker, placeId) {
+    // query Google Maps Places API
+    var service = new google.maps.places.PlacesService(map);
+    service.getDetails({
+      placeId: placeId
+    }, function(place, status) {
+      // check for success
+      if (status === google.maps.places.PlacesServiceStatus.OK) {
+        // check for photos
+        if (place.photos) {
+          // return 1st photo
+          var photoUrl = place.photos[0].getUrl({maxWidth: 200, maxHeight: 150});
+          if (photoUrl !== "") {
+            viewModel.updatePhoto(marker.id, photoUrl);
+          }
+        }
+      } else {
+        window.alert('Google Places search failed due to '+ status);
+      }
+    });
   }
 
 };

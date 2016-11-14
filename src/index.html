@@ -40,6 +40,9 @@
           <span data-bind="text: wikiMsg"></span>
         </p>
       </div>
+      <p class="attributions">Images courtesy of Google Places and StreetView APIs.
+        Wikipedia link courtesy of Wikipedia API. All other details courtesy of
+        Foursquare API.</p>
     </div>
     <div class="map-container">
       <nav id="navbar">
@@ -55,7 +58,7 @@
   <script src="js/wikiview.js"></script>
   <script src="js/foursquareview.js"></script>
   <script src="js/viewmodel.js"></script>
-  <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAz3kOqii58xK05S23w4e-NfhwY02oq4Uw&v=3&callback=viewModel.init">
+  <script async defer src="https://maps.googleapis.com/maps/api/js?libraries=places&key=AIzaSyAz3kOqii58xK05S23w4e-NfhwY02oq4Uw&v=3&callback=viewModel.init">
  </script>
 </body>
 </html>

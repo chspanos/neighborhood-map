@@ -152,12 +152,19 @@ var Place = function(data) {
   this.wikiLink = ko.observable("");
   this.wikiTitle = ko.observable("");
   this.wikiMsg = ko.observable("");
+  this.placesImg = ko.observable("");
   this.isDisplayed = ko.observable(true);
   this.isSelected = ko.observable(false);
 
   this.imgSrc = ko.computed(function() {
-    var baseStreetviewURL = 'http://maps.googleapis.com/maps/api/streetview?size=200x150&location=';
-    return baseStreetviewURL + this.location().lat + ',' + this.location().lng + '';
+    if (this.placesImg() !== "") {
+      // return Google Places image, if we have one
+      return this.placesImg();
+    } else {
+      // load Google Streetview image
+      var baseStreetviewURL = 'http://maps.googleapis.com/maps/api/streetview?size=200x150&location=';
+      return baseStreetviewURL + this.location().lat + ',' + this.location().lng + '';
+    }
   }, this);
 
 };
