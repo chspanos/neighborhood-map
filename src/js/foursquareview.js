@@ -22,14 +22,14 @@ var fourSqView = {
     }).done(function(data) {
       // data found, so do something with it
       var placeUrl = data.response.venue.canonicalUrl;
-      var msg = "Success";
+      var msg = 'Success';
 
       var categories = "";
       var typesList = data.response.venue.categories;
       for (var i = 0; i < typesList.length; i++) {
         categories += typesList[i].name;
         if (i < (typesList.length - 1)) {
-          categories += ", ";
+          categories += ', ';
         }
       }
 
@@ -39,7 +39,7 @@ var fourSqView = {
     }).fail(function(e) {
       var placeUrl = "";
       var categories = "";
-      var msg = "Foursquare search failed";
+      var msg = 'Foursquare search failed';
       viewModel.updateFSData(index, placeUrl, categories, msg);
     });
 

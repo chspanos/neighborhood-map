@@ -64,7 +64,7 @@ var mapView = {
         // stop the BOUNCE
         if ( this.marker !== null ) {
           this.marker.setAnimation( null );
-        };
+        }
         // close the window
         this.marker = null;
       });

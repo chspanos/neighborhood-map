@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="utf-8">
   <title>Neighborhood Map</title>
   <link rel="stylesheet" href="css/style.css">
   <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-T8Gy5hrqNKT+hzMclPo118YTQO6cYprQmhrYwIiQ/3axmI1hQomh7Ud2hPOy8SP1" crossorigin="anonymous">
@@ -10,11 +10,10 @@
   <div class="container">
     <div class="places-container" data-bind="css: { open: menuVisible }">
       <input id="close-btn" type="button" value="X" data-bind="click: toggleMenu">
-      <div class="filter-option">
-        <p class="filter">Select place type:
+      <p class="filter">Select place type:
         <select data-bind="options: availableFilters, value: selectedFilter">
-        </select></p>
-      </div>
+        </select>
+      </p>
       <div class="list-view">
         <h3>Lafayette, CA Places of Interest</h3>
         <ul id="places-list" data-bind="foreach: filteredList">

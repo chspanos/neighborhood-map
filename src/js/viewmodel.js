@@ -32,7 +32,7 @@ var ViewModel = function() {
   this.filteredList = ko.computed(function() {
     return ko.utils.arrayFilter(this.placeList(), function(place) {
       var chosenType = self.selectedFilter();
-      if (chosenType === "all") {
+      if (chosenType === 'all') {
         // display all
         place.isDisplayed(true);
         return true;
@@ -93,7 +93,7 @@ var ViewModel = function() {
   // returned by the foursquare API
   this.updateFSData = function(index, fourSQUrl,categories, msg) {
     var place = self.placeList()[index];
-    if (msg === "Success") {
+    if (msg === 'Success') {
       place.fourSqLink(fourSQUrl);
       place.fourSqTitle( place.name() );
       place.fourSqCategories(categories);
@@ -169,7 +169,7 @@ var ViewModel = function() {
       self.selectedPlace().isSelected(false);
     }
     place.isSelected(true);
-  }
+  };
 
   // Given a chosen marker, this function animates the
   // chosen marker and displays its data in the infowindow
@@ -194,7 +194,7 @@ var ViewModel = function() {
     }
     // reset the selectedPlace to the first item on the filteredList
     self.selectPlace( self.filteredList()[0] );
-  }, this, "change");
+  }, this, 'change');
 
 };
 
