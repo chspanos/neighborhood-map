@@ -13,7 +13,7 @@ This project is a neighborhood map created using the ```Google Maps API``` and o
 
 ### Skills
 * The neighborhood map and markers were implemented using the [Google Maps API](https://developers.google.com/maps/documentation/javascript/).
-* The [Knockout framework](http://knockoutjs.com) was employed to handle the places list-view, filter, and the larger ```DOM``` information window. Knockout uses ```observables``` to track variables and automatically updates their corresponding values in the ```DOM```.
+* The [Knockout framework](http://knockoutjs.com) was employed to handle the places list-view, filter, and the larger ```DOM``` information window. Knockout uses ```observables``` to track variables and automatically updates their corresponding elements in the ```DOM```.
 * The ```Google Maps Places API```, ```Google Streetview API```, the [Wikipedia API](https://www.mediawiki.org/wiki/API:Main_page), and the [Foursquare API](https://developer.foursquare.com/) were employed to download photos and additional information about a selected location.
 * ```Wikipedia API``` and ```Foursquare API``` data was requested using jQuery's ```ajax()``` methods.
 * All JavaScript, CSS, and HTML code was minified using ```Grunt``` build tools. Optimized versions of the code can be found in the ```dist``` directory on my github repository.
