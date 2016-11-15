@@ -21,6 +21,17 @@ var model = {
   // Array of places
   "places": [
     {
+      "name": "Lafayette Reservoir",
+      "address": "3849 Mt Diablo Blvd, Lafayette, CA",
+      "location": {
+        "lat": 37.884793,
+        "lng": -122.145527
+      },
+      "types": [ "establishment", "park", "point_of_interest" ],
+      "place_id": "ChIJd9qeu-1ihYAR447rYG0Eo8M",
+      "foursquare_id": "49e3cfdff964a520dd621fe3"
+    },
+    {
       "name": "Lafayette Hillside Memorial",
       "alt_name": "The Crosses of Lafayette",
       "address": "Deer Hill Rd, Lafayette, CA",
@@ -31,17 +42,6 @@ var model = {
       "types": [ "establishment", "park", "point_of_interest", "premise" ],
       "place_id": "ChIJRxvxSlFihYAR7K0dDXrNYTw",
       "foursquare_id": ""
-    },
-    {
-      "name": "Lafayette Reservoir",
-      "address": "3849 Mt Diablo Blvd, Lafayette, CA",
-      "location": {
-        "lat": 37.884793,
-        "lng": -122.145527
-      },
-      "types": [ "establishment", "park", "point_of_interest" ],
-      "place_id": "ChIJd9qeu-1ihYAR447rYG0Eo8M",
-      "foursquare_id": "49e3cfdff964a520dd621fe3"
     },
     {
       "name": "Lafayette Library and Learning Center",
@@ -149,6 +149,7 @@ var Place = function(data) {
   this.fourSqLink = ko.observable("");
   this.fourSqTitle = ko.observable("");
   this.fourSqMsg = ko.observable("");
+  this.fourSqCategories = ko.observable("");
   this.wikiLink = ko.observable("");
   this.wikiTitle = ko.observable("");
   this.wikiMsg = ko.observable("");
@@ -162,7 +163,7 @@ var Place = function(data) {
       return this.placesImg();
     } else {
       // load Google Streetview image
-      var baseStreetviewURL = 'http://maps.googleapis.com/maps/api/streetview?size=200x150&location=';
+      var baseStreetviewURL = 'http://maps.googleapis.com/maps/api/streetview?key=AIzaSyAz3kOqii58xK05S23w4e-NfhwY02oq4Uw&size=200x150&location=';
       return baseStreetviewURL + this.location().lat + ',' + this.location().lng + '';
     }
   }, this);

@@ -27,7 +27,8 @@
       <h5 data-bind="text: name"></h5>
       <p class="place-info" data-bind="text: altName"></p>
       <p class="place-info" data-bind="text: address"></p>
-      <img class="place-img" src="" alt="streetview image" data-bind="attr: {src: imgSrc}">
+      <p class="place-info" data-bind="text: fourSqCategories"></p>
+      <img class="place-img" src="" alt="place image" data-bind="attr: {src: imgSrc}">
       <div class="foursquare-container">
         <p class="fa-foursquare">
           <a href="" data-bind="attr: {href: fourSqLink}, text: fourSqTitle"></a>
@@ -41,7 +42,7 @@
         </p>
       </div>
       <p class="attributions">Images courtesy of Google Places and StreetView APIs.
-        Wikipedia link courtesy of Wikipedia API. All other details courtesy of
+        Wikipedia link courtesy of Wikipedia API. Categories and link courtesy of
         Foursquare API.</p>
     </div>
     <div class="map-container">

@@ -91,16 +91,17 @@ var ViewModel = function() {
 
   // This function updates the indexed place element with the data
   // returned by the foursquare API
-  this.updateFSData = function(index, fourSQUrl, msg) {
+  this.updateFSData = function(index, fourSQUrl,categories, msg) {
     var place = self.placeList()[index];
     if (msg === "Success") {
       place.fourSqLink(fourSQUrl);
       place.fourSqTitle( place.name() );
-      place.fourSqMsg( "" );
+      place.fourSqCategories(categories);
+      place.fourSqMsg("");
     } else {
-      place.fourSqLink( "" );
-      place.fourSqTitle( "" );
-      place.fourSqMsg( msg );
+      place.fourSqLink("");
+      place.fourSqTitle("");
+      place.fourSqMsg(msg);
     }
   };
 

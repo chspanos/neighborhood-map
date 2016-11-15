@@ -24,13 +24,23 @@ var fourSqView = {
       var placeUrl = data.response.venue.canonicalUrl;
       var msg = "Success";
 
+      var categories = "";
+      var typesList = data.response.venue.categories;
+      for (var i = 0; i < typesList.length; i++) {
+        categories += typesList[i].name;
+        if (i < (typesList.length - 1)) {
+          categories += ", ";
+        }
+      }
+
       // update viewModel with foursquare data
-      viewModel.updateFSData(index, placeUrl, msg);
+      viewModel.updateFSData(index, placeUrl, categories, msg);
 
     }).fail(function(e) {
       var placeUrl = "";
+      var categories = "";
       var msg = "Foursquare search failed";
-      viewModel.updateFSData(index, placeUrl, msg);
+      viewModel.updateFSData(index, placeUrl, categories, msg);
     });
 
     return false;
