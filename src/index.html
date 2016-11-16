@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta charset="utf-8">
   <title>Neighborhood Map</title>
   <link rel="stylesheet" href="css/style.css">
@@ -23,7 +24,7 @@
     </div>
     <div class="place-window" data-bind="with: selectedPlace, css: { close: !windowVisible() }">
       <input id="close-window" type="button" value="X" data-bind="click: $parent.toggleWindow">
-      <h5 data-bind="text: name"></h5>
+      <h4 data-bind="text: name"></h4>
       <p class="place-info" data-bind="text: altName"></p>
       <p class="place-info" data-bind="text: address"></p>
       <p class="place-info" data-bind="text: fourSqCategories"></p>
