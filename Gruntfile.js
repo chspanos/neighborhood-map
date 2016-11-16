@@ -46,12 +46,21 @@ module.exports = function(grunt) {
     /* Minify JS files */
     uglify: {
       target: {
-        files: [{
+        /*files: [{
           expand: true,
           cwd: 'src/js',
           src: '*.js',
           dest: 'dist/js'
-        }]
+        }]*/
+        files: { 'dist/js/built.min.js': 'dist/js/built.js'}
+      }
+    },
+
+    /* Concatonate JS files into a single file */
+    concat: {
+      dist: {
+        src: ['src/js/model.js', 'src/js/mapview.js', 'src/js/foursquareview.js', 'src/js/wikiview.js', 'src/js/viewmodel.js'],
+        dest: 'dist/js/built.js',
       }
     },
 
@@ -61,7 +70,7 @@ module.exports = function(grunt) {
           removeComments: true,
           collapseWhitespace: true
         },
-        files: {'dist/index.html': 'src/index.html'}
+        files: {'dist/index.html': 'src/altindex.html'}
       }
     }
 
@@ -71,8 +80,9 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-copy');
   grunt.loadNpmTasks('grunt-mkdir');
   grunt.loadNpmTasks('grunt-contrib-cssmin');
+  grunt.loadNpmTasks('grunt-contrib-concat');
   grunt.loadNpmTasks('grunt-contrib-uglify');
   grunt.loadNpmTasks('grunt-contrib-htmlmin');
-  grunt.registerTask('default', ['clean', 'mkdir', 'cssmin', 'copy', 'uglify', 'htmlmin']);
+  grunt.registerTask('default', ['clean', 'mkdir', 'cssmin', 'copy', 'concat', 'uglify', 'htmlmin']);
 
 };
