@@ -18,16 +18,22 @@ body {
 .places-container {
   background-color: rgb(188, 227, 241);
   width: 300px;
-  height: 100%;
+  height: auto;
   z-index: 2;
   position: absolute;
   -webkit-transform: translate(-300px, 0);
+  -moz-transform: translate(-300px, 0);
+  -ms-transform: translate(-300px, 0);
+  -o-transform: translate(-300px, 0);
   transform: translate(-300px, 0);
   transition: transform 0.3s ease;
 }
 
 .places-container.open {
   -webkit-transform: translate(0, 0);
+  -moz-transform: translate(0, 0);
+  -ms-transform: translate(0, 0);
+  -o-transform: translate(0, 0);
   transform: translate(0, 0);
 }
 
@@ -75,8 +81,9 @@ body {
   height: auto;
   z-index: 3;
   position: absolute;
-  top: 425px;
-  left: 0;
+  left: 10px;
+  top: 150px;
+  border: 2px solid gray;
 }
 
 .place-window.close {
