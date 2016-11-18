@@ -39,7 +39,7 @@ var model = {
       },
       "types": ["establishment", "park", "point_of_interest", "premise"],
       "placeId": "ChIJRxvxSlFihYAR7K0dDXrNYTw",
-      "foursquareId": ""
+      "foursquareId": "4d3b29d7325ff04dac782345"
     },
     {
       "name": "Lafayette Library and Learning Center",
@@ -187,6 +187,10 @@ var mapView = {
      return map;
    },
 
+   mapError: function() {
+     window.alert('ERROR: Google Maps API was unable to generate map');
+   },
+
    initBounds: function() {
      return( new google.maps.LatLngBounds() );
    },
@@ -226,8 +230,9 @@ var mapView = {
     if (infowindow.marker != marker) {
       // load the infowindow content for this place
       infowindow.marker = marker;
-      var title = '<div>' + marker.title + '</div>';
-      infowindow.setContent(title);
+      //var title = '<div>' + marker.title + '</div>';
+      var innerHTML = viewModel.setInnerHTML();
+      infowindow.setContent(innerHTML);
       infowindow.open(map, marker);
       // Add event listener to clear the marker upon close
       infowindow.addListener('closeclick', function() {
@@ -322,7 +327,7 @@ var fourSqView = {
     }).fail(function(e) {
       var placeUrl = "";
       var categories = "";
-      var msg = 'Foursquare search failed';
+      var msg = 'Foursquare search failed for this location';
       viewModel.updateFSData(index, placeUrl, categories, msg);
     });
 
@@ -337,10 +342,6 @@ var wikiView = {
   loadWikiData: function(placeName, index) {
 
     // load wikipedia data
-    var wikiRequestTimeout = setTimeout(function(){
-      viewModel.updateWikiData(index, '', '', 'Failed to retrieve Wikipedia data for this place');
-    }, 8000);
-
     var wikiBaseUrl = 'http://en.wikipedia.org/w/api.php';
 
     $.ajax({
@@ -367,12 +368,8 @@ var wikiView = {
         // Oops! Search returned an empty array but no error
         viewModel.updateWikiData(index, '', '', 'No matching Wikipedia entries found');
       }
-
-      // turn off timeout
-      clearTimeout(wikiRequestTimeout);
-
     }).fail(function(e) {
-      viewModel.updateWikiData(index, '', '', 'Wikipedia search failed');
+      viewModel.updateWikiData(index, '', '', 'Wikipedia search failed for this location');
     });
 
     return false;
@@ -435,14 +432,6 @@ var ViewModel = function() {
   // declare an observable selected place
   this.selectedPlace = ko.observable( null );
 
-  // initialize DOM infowindow
-  this.windowVisible = ko.observable(true);
-
-  // event handler for the DOM infowindow click
-  this.toggleWindow = function() {
-    self.windowVisible( !self.windowVisible() );
-  };
-
   // this function is called by the google maps API callback and
   // kicks off the application
   this.init = function() {
@@ -455,8 +444,6 @@ var ViewModel = function() {
     this.loadData();
     // create and display markers
     this.createMarkers();
-    // set the selectedPlace to be the first item on the places list
-    this.selectPlace( this.placeList()[0] );
   };
 
   // loadData function traverses the placeList and calls the
@@ -535,7 +522,6 @@ var ViewModel = function() {
     // highlight the corresponding marker
     // and display its data in an infoWindow
     self.activateMarker( model.markers[index] );
-    self.windowVisible(true);
   };
 
   // Given a placeList index, update and highlight selectedPlace
@@ -576,6 +562,36 @@ var ViewModel = function() {
     // reset the selectedPlace to the first item on the filteredList
     self.selectPlace( self.filteredList()[0] );
   }, this, 'change');
+
+  // This function creates the HTML content for the map infowindow using
+  // data from the selected place. It is called by the mapView and returns
+  // its HTML for mapView to use in a marker infowindow.
+  // Note: KO cannot be used to load a Google Maps infowindow 
+  this.setInnerHTML = function() {
+    var place = self.selectedPlace();
+    var innerHTML = '';
+    // load title
+    innerHTML += '<h3 class="info-header">' + place.name() + '</h3>';
+    // load address
+    innerHTML += '<p>' + place.address() + '</p>';
+    // load categories
+    innerHTML += '<p>' + place.fourSqCategories() + '</p>';
+    // load image
+    innerHTML += '<img src="' + place.imgSrc() + '" alt="place image">';
+    // load foursquare link
+    innerHTML += '<p class="fa-foursquare">';
+    innerHTML += '<a href="' + place.fourSqLink() + '">' + place.fourSqTitle() + '</a>';
+    innerHTML += '<span>' + place.fourSqMsg() + '</span>';
+    // load wikipedia link
+    innerHTML += '<p class="fa-wikipedia-w">';
+    innerHTML += '<a href="' + place.wikiLink() + '">' + place.wikiTitle() + '</a>';
+    innerHTML += '<span>' + place.wikiMsg() + '</span>';
+    // load attribution
+    innerHTML += '<p class="attributions">Images courtesy of Google Places and ' +
+      ' StreetView APIs. Wikipedia link courtesy of Wikipedia API. ' +
+      'Categories and link courtesy of Foursquare API.</p>';
+    return innerHTML;
+  };
 
 };
 

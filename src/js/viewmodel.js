@@ -54,14 +54,6 @@ var ViewModel = function() {
   // declare an observable selected place
   this.selectedPlace = ko.observable( null );
 
-  // initialize DOM infowindow
-  this.windowVisible = ko.observable(true);
-
-  // event handler for the DOM infowindow click
-  this.toggleWindow = function() {
-    self.windowVisible( !self.windowVisible() );
-  };
-
   // this function is called by the google maps API callback and
   // kicks off the application
   this.init = function() {
@@ -74,8 +66,6 @@ var ViewModel = function() {
     this.loadData();
     // create and display markers
     this.createMarkers();
-    // set the selectedPlace to be the first item on the places list
-    this.selectPlace( this.placeList()[0] );
   };
 
   // loadData function traverses the placeList and calls the
@@ -154,7 +144,6 @@ var ViewModel = function() {
     // highlight the corresponding marker
     // and display its data in an infoWindow
     self.activateMarker( model.markers[index] );
-    self.windowVisible(true);
   };
 
   // Given a placeList index, update and highlight selectedPlace
@@ -195,6 +184,36 @@ var ViewModel = function() {
     // reset the selectedPlace to the first item on the filteredList
     self.selectPlace( self.filteredList()[0] );
   }, this, 'change');
+
+  // This function creates the HTML content for the map infowindow using
+  // data from the selected place. It is called by the mapView and returns
+  // its HTML for mapView to use in a marker infowindow.
+  // Note: KO cannot be used to load a Google Maps infowindow 
+  this.setInnerHTML = function() {
+    var place = self.selectedPlace();
+    var innerHTML = '';
+    // load title
+    innerHTML += '<h3 class="info-header">' + place.name() + '</h3>';
+    // load address
+    innerHTML += '<p>' + place.address() + '</p>';
+    // load categories
+    innerHTML += '<p>' + place.fourSqCategories() + '</p>';
+    // load image
+    innerHTML += '<img src="' + place.imgSrc() + '" alt="place image">';
+    // load foursquare link
+    innerHTML += '<p class="fa-foursquare">';
+    innerHTML += '<a href="' + place.fourSqLink() + '">' + place.fourSqTitle() + '</a>';
+    innerHTML += '<span>' + place.fourSqMsg() + '</span>';
+    // load wikipedia link
+    innerHTML += '<p class="fa-wikipedia-w">';
+    innerHTML += '<a href="' + place.wikiLink() + '">' + place.wikiTitle() + '</a>';
+    innerHTML += '<span>' + place.wikiMsg() + '</span>';
+    // load attribution
+    innerHTML += '<p class="attributions">Images courtesy of Google Places and ' +
+      ' StreetView APIs. Wikipedia link courtesy of Wikipedia API. ' +
+      'Categories and link courtesy of Foursquare API.</p>';
+    return innerHTML;
+  };
 
 };
 

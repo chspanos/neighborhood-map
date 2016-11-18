@@ -9,53 +9,31 @@
 </head>
 <body>
   <div class="container">
-    <div class="places-container" data-bind="css: { open: menuVisible }">
+    <nav class="places-container" data-bind="css: { open: menuVisible }">
       <input id="close-btn" type="button" value="X" data-bind="click: toggleMenu">
       <p class="filter">Select place type:
         <select data-bind="options: availableFilters, value: selectedFilter">
         </select>
       </p>
-      <div class="list-view">
+      <section class="list-view">
         <h3>Lafayette, CA Places of Interest</h3>
         <ul id="places-list" data-bind="foreach: filteredList">
           <li class="place" data-bind="text: name, click: $parent.selectPlace, css: { highlight: isSelected }"></li>
         </ul>
-      </div>
-    </div>
-    <div class="place-window" data-bind="with: selectedPlace, css: { close: !windowVisible() }">
-      <input id="close-window" type="button" value="X" data-bind="click: $parent.toggleWindow">
-      <h4 data-bind="text: name"></h4>
-      <p class="place-info" data-bind="text: altName"></p>
-      <p class="place-info" data-bind="text: address"></p>
-      <p class="place-info" data-bind="text: fourSqCategories"></p>
-      <img class="place-img" src="" alt="place image" data-bind="attr: {src: imgSrc}">
-      <div class="foursquare-container">
-        <p class="fa-foursquare">
-          <a href="" data-bind="attr: {href: fourSqLink}, text: fourSqTitle"></a>
-          <span data-bind="text: fourSqMsg"></span>
-        </p>
-      </div>
-      <div class="wikipedia-container">
-        <p class="fa-wikipedia-w">
-          <a href="" data-bind="attr: {href: wikiLink}, text: wikiTitle"></a>
-          <span data-bind="text: wikiMsg"></span>
-        </p>
-      </div>
-      <p class="attributions">Images courtesy of Google Places and StreetView APIs.
-        Wikipedia link courtesy of Wikipedia API. Categories and link courtesy of
-        Foursquare API.</p>
-    </div>
-    <div class="map-container">
-      <nav id="navbar">
+      </section>
+    </nav>
+    <main class="map-container">
+      <header id="navbar">
         <p class="menu-btn"><a class="fa-bars" href="#menu" alt="menu button" data-bind="click: toggleMenu"></a></p>
-      </nav>
+      </header>
       <div id="map"></div>
-    </div>
+    </main>
   </div>
   <script src="js/lib/knockout.js"></script>
   <script src="js/lib/jquery.min.js"></script>
   <script src="js/built.min.js"></script>
-  <script async defer src="https://maps.googleapis.com/maps/api/js?libraries=places&key=AIzaSyAz3kOqii58xK05S23w4e-NfhwY02oq4Uw&v=3&callback=viewModel.init">
+  <script src="https://maps.googleapis.com/maps/api/js?libraries=places&key=AIzaSyAz3kOqii58xK05S23w4e-NfhwY02oq4Uw&v=3&callback=viewModel.init"
+    async defer onerror="mapView.mapError()">
  </script>
 </body>
 </html>

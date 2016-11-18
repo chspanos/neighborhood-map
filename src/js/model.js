@@ -39,7 +39,7 @@ var model = {
       },
       "types": ["establishment", "park", "point_of_interest", "premise"],
       "placeId": "ChIJRxvxSlFihYAR7K0dDXrNYTw",
-      "foursquareId": ""
+      "foursquareId": "4d3b29d7325ff04dac782345"
     },
     {
       "name": "Lafayette Library and Learning Center",

@@ -17,6 +17,10 @@ var mapView = {
      return map;
    },
 
+   mapError: function() {
+     window.alert('ERROR: Google Maps API was unable to generate map');
+   },
+
    initBounds: function() {
      return( new google.maps.LatLngBounds() );
    },
@@ -56,8 +60,9 @@ var mapView = {
     if (infowindow.marker != marker) {
       // load the infowindow content for this place
       infowindow.marker = marker;
-      var title = '<div>' + marker.title + '</div>';
-      infowindow.setContent(title);
+      //var title = '<div>' + marker.title + '</div>';
+      var innerHTML = viewModel.setInnerHTML();
+      infowindow.setContent(innerHTML);
       infowindow.open(map, marker);
       // Add event listener to clear the marker upon close
       infowindow.addListener('closeclick', function() {
