@@ -161,7 +161,7 @@ var Place = function(data) {
       return this.placesImg();
     } else {
       // load Google Streetview image
-      var baseStreetviewURL = 'http://maps.googleapis.com/maps/api/streetview?key=AIzaSyAz3kOqii58xK05S23w4e-NfhwY02oq4Uw&size=200x150&location=';
+      var baseStreetviewURL = 'https://maps.googleapis.com/maps/api/streetview?key=AIzaSyAz3kOqii58xK05S23w4e-NfhwY02oq4Uw&size=200x150&location=';
       return baseStreetviewURL + this.location().lat + ',' + this.location().lng + '';
     }
   }, this);
