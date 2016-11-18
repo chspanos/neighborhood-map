@@ -55,7 +55,8 @@
   <script src="js/lib/knockout.js"></script>
   <script src="js/lib/jquery.min.js"></script>
   <script src="js/built.min.js"></script>
-  <script async defer src="https://maps.googleapis.com/maps/api/js?libraries=places&key=AIzaSyAz3kOqii58xK05S23w4e-NfhwY02oq4Uw&v=3&callback=viewModel.init">
+  <script src="https://maps.googleapis.com/maps/api/js?libraries=places&key=AIzaSyAz3kOqii58xK05S23w4e-NfhwY02oq4Uw&v=3&callback=viewModel.init"
+    async defer onerror="mapView.mapError()">
  </script>
 </body>
 </html>

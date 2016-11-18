@@ -17,6 +17,10 @@ var mapView = {
      return map;
    },
 
+   mapError: function() {
+     window.alert('ERROR: Google Maps API was unable to generate map');
+   },
+
    initBounds: function() {
      return( new google.maps.LatLngBounds() );
    },

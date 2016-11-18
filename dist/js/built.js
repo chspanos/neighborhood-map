@@ -39,7 +39,7 @@ var model = {
       },
       "types": ["establishment", "park", "point_of_interest", "premise"],
       "placeId": "ChIJRxvxSlFihYAR7K0dDXrNYTw",
-      "foursquareId": ""
+      "foursquareId": "4d3b29d7325ff04dac782345"
     },
     {
       "name": "Lafayette Library and Learning Center",
@@ -187,6 +187,10 @@ var mapView = {
      return map;
    },
 
+   mapError: function() {
+     window.alert('ERROR: Google Maps API was unable to generate map');
+   },
+
    initBounds: function() {
      return( new google.maps.LatLngBounds() );
    },
@@ -322,7 +326,7 @@ var fourSqView = {
     }).fail(function(e) {
       var placeUrl = "";
       var categories = "";
-      var msg = 'Foursquare search failed';
+      var msg = 'Foursquare search failed for this location';
       viewModel.updateFSData(index, placeUrl, categories, msg);
     });
 
@@ -337,10 +341,6 @@ var wikiView = {
   loadWikiData: function(placeName, index) {
 
     // load wikipedia data
-    var wikiRequestTimeout = setTimeout(function(){
-      viewModel.updateWikiData(index, '', '', 'Failed to retrieve Wikipedia data for this place');
-    }, 8000);
-
     var wikiBaseUrl = 'http://en.wikipedia.org/w/api.php';
 
     $.ajax({
@@ -367,12 +367,8 @@ var wikiView = {
         // Oops! Search returned an empty array but no error
         viewModel.updateWikiData(index, '', '', 'No matching Wikipedia entries found');
       }
-
-      // turn off timeout
-      clearTimeout(wikiRequestTimeout);
-
     }).fail(function(e) {
-      viewModel.updateWikiData(index, '', '', 'Wikipedia search failed');
+      viewModel.updateWikiData(index, '', '', 'Wikipedia search failed for this location');
     });
 
     return false;

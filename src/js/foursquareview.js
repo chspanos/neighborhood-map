@@ -39,7 +39,7 @@ var fourSqView = {
     }).fail(function(e) {
       var placeUrl = "";
       var categories = "";
-      var msg = 'Foursquare search failed';
+      var msg = 'Foursquare search failed for this location';
       viewModel.updateFSData(index, placeUrl, categories, msg);
     });
 
