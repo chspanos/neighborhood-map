@@ -5,7 +5,7 @@ var wikiView = {
   loadWikiData: function(placeName, index) {
 
     // load wikipedia data
-    var wikiBaseUrl = 'http://en.wikipedia.org/w/api.php';
+    var wikiBaseUrl = 'https://en.wikipedia.org/w/api.php';
 
     $.ajax({
       url: wikiBaseUrl,
