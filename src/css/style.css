@@ -77,21 +77,6 @@ body {
   padding-top: 5px;
 }
 
-.place-window {
-  background-color: white;
-  width: 300px;
-  height: auto;
-  z-index: 3;
-  position: absolute;
-  left: 10px;
-  top: 150px;
-  border: 2px solid gray;
-}
-
-.place-window.close {
-  display: none;
-}
-
 input {
   font-size: 16px;
 }
@@ -101,10 +86,9 @@ h3 {
   padding-top: 10px;
 }
 
-h4,
-h5 {
-  padding-left: 10px;
-  margin-bottom: 1em;
+h3.info-header {
+  padding-left: 0;
+  padding-top: 0;
 }
 
 select {
@@ -121,21 +105,9 @@ select {
   background-color: rgba(255, 255, 0, 0.6);
 }
 
-.place-img {
-  width = 200px;
-  padding-left: 25px;
-}
-
-.place-info,
-.foursquare-container,
-.wikipedia-container {
-  font-size: 14px;
-  padding-left: 25px;
-}
-
 .attributions {
   font-size: 12px;
-  padding-left: 10px;
+  width: 225px;
 }
 
 #navbar {

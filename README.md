@@ -7,13 +7,13 @@ This project is a neighborhood map created using the ```Google Maps API``` and o
 * Points of interest are featured in a list-view menu on the sidebar and displayed with markers on the map.
 * Using the dropdown menu, the user can filter this list of locations.
 * A point of interest may be selected by either clicking on a location in the list-view or on its corresponding marker on the map.
-* When selected, additional details about that location are displayed in a separate window. Its corresponding marker is animated on the map and a smaller ```infowindow``` is opened above the map marker.
+* When selected, additional details about that location are displayed in an ```infowindow```. Its corresponding marker is animated on the map and the ```infowindow``` is opened above the map marker.
 * All components are rendered in a responsive manner designed to work on both mobile and desktop.
 * On mobile devices, the places list-view is initially off screen and can be accessed via the hamburger menu button in the navbar.
 
 ### Skills
 * The neighborhood map and markers were implemented using the [Google Maps API](https://developers.google.com/maps/documentation/javascript/).
-* The [Knockout framework](http://knockoutjs.com) was employed to handle the places list-view, filter, and the larger ```DOM``` information window. Knockout uses ```observables``` to track variables and automatically updates their corresponding elements in the ```DOM```.
+* The [Knockout framework](http://knockoutjs.com) was employed to handle the places list-view and filter. Knockout uses ```observables``` to track variables and automatically updates their corresponding elements in the ```DOM```.
 * ```Google Maps Places API```, ```Google Streetview API```,  [Wikipedia API](https://www.mediawiki.org/wiki/API:Main_page), and [Foursquare API](https://developer.foursquare.com/) were employed to download photos and additional information about a selected location.
 * ```Wikipedia API``` and ```Foursquare API``` data was requested using jQuery's ```ajax()``` methods.
 * JavaScript, CSS, and HTML code was minified using ```Grunt``` build tools. Optimized versions of the code can be found in the ```dist/``` subdirectory on my github repository.
