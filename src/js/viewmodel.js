@@ -71,37 +71,14 @@ var ViewModel = function() {
   // loadData function traverses the placeList and calls the
   // APIs to load their data
   this.loadData = function() {
-    for (var i = 0; i < this.placeList().length; i++) {
+    self.placeList().forEach(function(place) {
       // load Foursquare data
-      fourSqView.loadFSData( this.placeList()[i].foursquareId(), i );
+      place.loadFSData();
       // load Wikipedia link
-      wikiView.loadWikiData( this.placeList()[i].name(), i );
-    }
-  };
-
-  // This function updates the indexed place element with the data
-  // returned by the foursquare API
-  this.updateFSData = function(index, fourSQUrl,categories, msg) {
-    var place = self.placeList()[index];
-    if (msg === 'Success') {
-      place.fourSqLink(fourSQUrl);
-      place.fourSqTitle( place.name() );
-      place.fourSqCategories(categories);
-      place.fourSqMsg("");
-    } else {
-      place.fourSqLink("");
-      place.fourSqTitle("");
-      place.fourSqMsg(msg);
-    }
-  };
-
-  // This function updates the indexed place element with the data
-  // returned by the wikipedia API
-  this.updateWikiData = function(index, url, title, msg) {
-    var place = self.placeList()[index];
-    place.wikiLink(url);
-    place.wikiTitle(title);
-    place.wikiMsg(msg);
+      place.loadWikiData();
+      // Load Google Maps Places image
+      place.loadPlaceDetails(model.map);
+    });
   };
 
   // createMarker function traverses the placeList and creates
@@ -114,20 +91,11 @@ var ViewModel = function() {
       // get postion and name from the place array
       var name = this.placeList()[i].name();
       var location = this.placeList()[i].location();
-      var placeId = this.placeList()[i].placeId();
       // create map marker
       marker = mapView.createMapMarker(model.map, model.bounds, location, name, i);
-      // use Google Maps Places to look up details on the marker
-      mapView.loadPlaceDetails(model.map, marker, placeId);
       // Push the marker to our array of markers
       model.markers.push(marker);
     }
-  };
-
-  // This function updates the model with the places data returned
-  // from the Google Places API
-  this.updatePhoto = function(index, imageUrl) {
-    self.placeList()[index].placesImg(imageUrl);
   };
 
   // when a place is selected (either by menu, map click or initialization),
