@@ -188,7 +188,7 @@ var ViewModel = function() {
   // This function creates the HTML content for the map infowindow using
   // data from the selected place. It is called by the mapView and returns
   // its HTML for mapView to use in a marker infowindow.
-  // Note: KO cannot be used to load a Google Maps infowindow 
+  // Note: KO cannot be used to load a Google Maps infowindow
   this.setInnerHTML = function() {
     var place = self.selectedPlace();
     var innerHTML = '';
@@ -202,11 +202,11 @@ var ViewModel = function() {
     innerHTML += '<img src="' + place.imgSrc() + '" alt="place image">';
     // load foursquare link
     innerHTML += '<p class="fa-foursquare">';
-    innerHTML += '<a href="' + place.fourSqLink() + '">' + place.fourSqTitle() + '</a>';
+    innerHTML += '<a href="' + place.fourSqLink() + '" target="blank">' + place.fourSqTitle() + '</a>';
     innerHTML += '<span>' + place.fourSqMsg() + '</span>';
     // load wikipedia link
     innerHTML += '<p class="fa-wikipedia-w">';
-    innerHTML += '<a href="' + place.wikiLink() + '">' + place.wikiTitle() + '</a>';
+    innerHTML += '<a href="' + place.wikiLink() + '" target="blank">' + place.wikiTitle() + '</a>';
     innerHTML += '<span>' + place.wikiMsg() + '</span>';
     // load attribution
     innerHTML += '<p class="attributions">Images courtesy of Google Places and ' +
