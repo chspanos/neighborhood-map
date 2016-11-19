@@ -168,6 +168,32 @@ var Place = function(data) {
 
 };
 
+// load Google Places image - Place method
+Place.prototype.loadPlaceDetails = function(map) {
+  var self = this;
+
+  // query Google Maps Places API
+  var service = new google.maps.places.PlacesService(map);
+  service.getDetails({
+    placeId: self.placeId()
+  }, function(place, status) {
+    // check for success
+    if (status === google.maps.places.PlacesServiceStatus.OK) {
+      // check for photos
+      if (place.photos) {
+        // return 1st photo
+        var photoUrl = place.photos[0].getUrl({maxWidth: 200, maxHeight: 150});
+        if (photoUrl !== "") {
+          self.placesImg(photoUrl);
+        }
+      }
+    } else {
+      window.alert('Google Places search failed due to '+ status);
+    }
+  });
+
+};
+
 // The Map View section
 
 var mapView = {
@@ -259,121 +285,100 @@ var mapView = {
   // Set marker visibility
   updateMarker: function(marker, visibility) {
     marker.setVisible(visibility);
-  },
-
-  // funftion to load places details from Google places
-  loadPlaceDetails: function(map, marker, placeId) {
-    // query Google Maps Places API
-    var service = new google.maps.places.PlacesService(map);
-    service.getDetails({
-      placeId: placeId
-    }, function(place, status) {
-      // check for success
-      if (status === google.maps.places.PlacesServiceStatus.OK) {
-        // check for photos
-        if (place.photos) {
-          // return 1st photo
-          var photoUrl = place.photos[0].getUrl({maxWidth: 200, maxHeight: 150});
-          if (photoUrl !== "") {
-            viewModel.updatePhoto(marker.id, photoUrl);
-          }
-        }
-      } else {
-        window.alert('Google Places search failed due to '+ status);
-      }
-    });
   }
 
 };
 
-// Foursquare View
+// Load Foursquare data - Place method
 var CLIENT_ID = 'IDA2YR42QMPJ0O04TMIIGNX42BMNK4Z3UGQTVY2DFF5I2MSV';
 var CLIENT_SECRET = 'SZ3FOYMEK0530G2JDCSHAUJSRPMMYKFFKIFITLFFZ1P01CWI';
 
-var fourSqView = {
+Place.prototype.loadFSData = function() {
+  var self = this;
 
-  loadFSData: function(placeId, index) {
+  var version = 20160108;
+  var baseUrl = 'https://api.foursquare.com/v2/venues';
+  var fourSqUrl = baseUrl + '/' + self.foursquareId();
 
-    var version = 20160108;
-    var baseUrl = 'https://api.foursquare.com/v2/venues';
-    var fourSqUrl = baseUrl + '/' + placeId;
+  $.ajax({
+    url: fourSqUrl,
+    data: {
+      "client_id": CLIENT_ID,
+      "client_secret": CLIENT_SECRET,
+      "v": version,
+      "async": true,
+    },
+    dataType: "json"
+  }).done(function(data) {
+    // data found, so do something with it
+    var placeUrl = data.response.venue.canonicalUrl;
 
-    $.ajax({
-      url: fourSqUrl,
-      data: {
-        "client_id": CLIENT_ID,
-        "client_secret": CLIENT_SECRET,
-        "v": version,
-        "async": true,
-      },
-      dataType: "json"
-    }).done(function(data) {
-      // data found, so do something with it
-      var placeUrl = data.response.venue.canonicalUrl;
-      var msg = 'Success';
-
-      var categories = "";
-      var typesList = data.response.venue.categories;
-      for (var i = 0; i < typesList.length; i++) {
-        categories += typesList[i].name;
-        if (i < (typesList.length - 1)) {
-          categories += ', ';
-        }
+    var categories = "";
+    var typesList = data.response.venue.categories;
+    for (var i = 0; i < typesList.length; i++) {
+      categories += typesList[i].name;
+      if (i < (typesList.length - 1)) {
+        categories += ', ';
       }
+    }
 
-      // update viewModel with foursquare data
-      viewModel.updateFSData(index, placeUrl, categories, msg);
+    // update viewModel with foursquare data
+    self.fourSqLink(placeUrl);
+    self.fourSqTitle( self.name() );
+    self.fourSqCategories(categories);
+    self.fourSqMsg("");
 
-    }).fail(function(e) {
-      var placeUrl = "";
-      var categories = "";
-      var msg = 'Foursquare search failed for this location';
-      viewModel.updateFSData(index, placeUrl, categories, msg);
-    });
+  }).fail(function(e) {
+    self.fourSqLink("");
+    self.fourSqTitle("");
+    self.fourSqMsg("Foursquare search failed for this location");
+  });
 
-    return false;
-  }
 };
 
-// Wikipedia data view
+// Load Wikipedia Data - Place method
 
-var wikiView = {
+Place.prototype.loadWikiData = function() {
+  var self = this;
+  var placeName = self.name();
 
-  loadWikiData: function(placeName, index) {
+  // load wikipedia data
+  var wikiBaseUrl = 'https://en.wikipedia.org/w/api.php';
 
-    // load wikipedia data
-    var wikiBaseUrl = 'https://en.wikipedia.org/w/api.php';
+  $.ajax({
+    url: wikiBaseUrl,
+    data: {
+      "action": "opensearch",
+      "search": placeName,
+      "format": "json",
+      "async": true
+    },
+    dataType: "jsonp",
+    jsonp: "callback"
+  }).done(function(data) {
+    // data found, so do something with it
+    var titles = data[1];
+    var urls = data[3];
+    if (titles.length > 0) {
+      // pull out data
+      var title = titles[0];
+      var url = urls[0];
+      // update place with first match
+      self.wikiLink(url);
+      self.wikiTitle(title);
+      self.wikiMsg("");
+    } else {
+      // Oops! Search returned an empty array but no error
+      self.wikiLink("");
+      self.wikiTitle("");
+      self.wikiMsg("No matching Wikipedia entries found");
+    }
+  }).fail(function(e) {
+    self.wikiLink("");
+    self.wikiTitle("");
+    self.wikiMsg("Wikipedia search failed for this location");
+  });
 
-    $.ajax({
-      url: wikiBaseUrl,
-      data: {
-        "action": "opensearch",
-        "search": placeName,
-        "format": "json",
-        "async": true
-      },
-      dataType: "jsonp",
-      jsonp: "callback"
-    }).done(function(data) {
-      // data found, so do something with it
-      var titles = data[1];
-      var urls = data[3];
-      if (titles.length > 0) {
-        // pull out data
-        var title = titles[0];
-        var url = urls[0];
-        // update place with first match
-        viewModel.updateWikiData(index, url, title, '');
-      } else {
-        // Oops! Search returned an empty array but no error
-        viewModel.updateWikiData(index, '', '', 'No matching Wikipedia entries found');
-      }
-    }).fail(function(e) {
-      viewModel.updateWikiData(index, '', '', 'Wikipedia search failed for this location');
-    });
-
-    return false;
-  }
 };
 
 // ViewModel section
@@ -449,37 +454,14 @@ var ViewModel = function() {
   // loadData function traverses the placeList and calls the
   // APIs to load their data
   this.loadData = function() {
-    for (var i = 0; i < this.placeList().length; i++) {
+    self.placeList().forEach(function(place) {
       // load Foursquare data
-      fourSqView.loadFSData( this.placeList()[i].foursquareId(), i );
+      place.loadFSData();
       // load Wikipedia link
-      wikiView.loadWikiData( this.placeList()[i].name(), i );
-    }
-  };
-
-  // This function updates the indexed place element with the data
-  // returned by the foursquare API
-  this.updateFSData = function(index, fourSQUrl,categories, msg) {
-    var place = self.placeList()[index];
-    if (msg === 'Success') {
-      place.fourSqLink(fourSQUrl);
-      place.fourSqTitle( place.name() );
-      place.fourSqCategories(categories);
-      place.fourSqMsg("");
-    } else {
-      place.fourSqLink("");
-      place.fourSqTitle("");
-      place.fourSqMsg(msg);
-    }
-  };
-
-  // This function updates the indexed place element with the data
-  // returned by the wikipedia API
-  this.updateWikiData = function(index, url, title, msg) {
-    var place = self.placeList()[index];
-    place.wikiLink(url);
-    place.wikiTitle(title);
-    place.wikiMsg(msg);
+      place.loadWikiData();
+      // Load Google Maps Places image
+      place.loadPlaceDetails(model.map);
+    });
   };
 
   // createMarker function traverses the placeList and creates
@@ -492,20 +474,11 @@ var ViewModel = function() {
       // get postion and name from the place array
       var name = this.placeList()[i].name();
       var location = this.placeList()[i].location();
-      var placeId = this.placeList()[i].placeId();
       // create map marker
       marker = mapView.createMapMarker(model.map, model.bounds, location, name, i);
-      // use Google Maps Places to look up details on the marker
-      mapView.loadPlaceDetails(model.map, marker, placeId);
       // Push the marker to our array of markers
       model.markers.push(marker);
     }
-  };
-
-  // This function updates the model with the places data returned
-  // from the Google Places API
-  this.updatePhoto = function(index, imageUrl) {
-    self.placeList()[index].placesImg(imageUrl);
   };
 
   // when a place is selected (either by menu, map click or initialization),
@@ -566,7 +539,7 @@ var ViewModel = function() {
   // This function creates the HTML content for the map infowindow using
   // data from the selected place. It is called by the mapView and returns
   // its HTML for mapView to use in a marker infowindow.
-  // Note: KO cannot be used to load a Google Maps infowindow 
+  // Note: KO cannot be used to load a Google Maps infowindow
   this.setInnerHTML = function() {
     var place = self.selectedPlace();
     var innerHTML = '';
@@ -580,11 +553,11 @@ var ViewModel = function() {
     innerHTML += '<img src="' + place.imgSrc() + '" alt="place image">';
     // load foursquare link
     innerHTML += '<p class="fa-foursquare">';
-    innerHTML += '<a href="' + place.fourSqLink() + '">' + place.fourSqTitle() + '</a>';
+    innerHTML += '<a href="' + place.fourSqLink() + '" target="blank">' + place.fourSqTitle() + '</a>';
     innerHTML += '<span>' + place.fourSqMsg() + '</span>';
     // load wikipedia link
     innerHTML += '<p class="fa-wikipedia-w">';
-    innerHTML += '<a href="' + place.wikiLink() + '">' + place.wikiTitle() + '</a>';
+    innerHTML += '<a href="' + place.wikiLink() + '" target="blank">' + place.wikiTitle() + '</a>';
     innerHTML += '<span>' + place.wikiMsg() + '</span>';
     // load attribution
     innerHTML += '<p class="attributions">Images courtesy of Google Places and ' +

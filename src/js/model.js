@@ -167,3 +167,29 @@ var Place = function(data) {
   }, this);
 
 };
+
+// load Google Places image - Place method
+Place.prototype.loadPlaceDetails = function(map) {
+  var self = this;
+
+  // query Google Maps Places API
+  var service = new google.maps.places.PlacesService(map);
+  service.getDetails({
+    placeId: self.placeId()
+  }, function(place, status) {
+    // check for success
+    if (status === google.maps.places.PlacesServiceStatus.OK) {
+      // check for photos
+      if (place.photos) {
+        // return 1st photo
+        var photoUrl = place.photos[0].getUrl({maxWidth: 200, maxHeight: 150});
+        if (photoUrl !== "") {
+          self.placesImg(photoUrl);
+        }
+      }
+    } else {
+      window.alert('Google Places search failed due to '+ status);
+    }
+  });
+
+};
